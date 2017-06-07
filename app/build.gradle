@@ -1,0 +1,41 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        config {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            storeFile file(properties.getProperty('storeFile'))
+            keyAlias properties.getProperty('keyAlias')
+            storePassword properties.getProperty('storePassword')
+            keyPassword properties.getProperty('keyPassword')
+        }
+    }
+    compileSdkVersion 22
+    buildToolsVersion "21.1.2"
+    defaultConfig {
+        applicationId 'com.vlvolad.quantumoscillator'
+        minSdkVersion 10
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:22.0.0'
+}
