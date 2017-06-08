@@ -7,21 +7,22 @@
     <string name="about_text_1b">Версія: 0.1</string>
     <string name="activity_name">Квантовий гармонічний осцилятор</string>
     <string name="btn_finish_about_label">Закрити</string>
-    <string name="orbital">Орбіталь:</string>
+    <string name="orbital">Власний стан:</string>
     <string name="btn_orbital_cancel_label">Відмінити</string>
     <string name="btn_orbital_ok_label">OK</string>
     <string name="discrete_warning">Недостатньо пам\'яті! Збільшіть крок дискретизації</string>
     <string name="google_play">Оцінити цей додаток</string>
     <string name="information">Інформація</string>
-    <string name="orbital_selection">Вибір орбіталі</string>
+    <string name="orbital_selection">Вибір власного стану</string>
     <string name="percent">Відсоток:</string>
     <string name="radio_complex">Комплексні</string>
     <string name="radio_real">Дійсні</string>
-    <string name="random_orbital">Випадк. орбіталь</string>
+    <string name="random_orbital">Випадк. стан</string>
     <string name="stepsize">Розмір кроку:</string>
     <string name="wave_function_type">Базис:</string>
     <string name="wikipedia_link">Більше інформації на Вікіпедії</string>
-    <string name="help_description">У даному додатку проводиться візуалізація електронних орбіталей атома водню. Ці орбіталі визначаються як переріз густини ймовірності знаходження електрону у тій чи іншій точці простору, яка у свою чергу визначається квадратом хвильової функції власних станів атома водню.\n\nВізуалізація орбіталей зійснюється у OpenGL, із використанням алгоритму Marching Cubes. Користувач має можливість вибрати орбіталі для показу шляхом задання квантових чисел n, l і m, а також типу базису хвильових функцій. Також є можливість регулювання рівня дискретизації та задання повної імовірності знаходження електрона всередині зображуваної поверхні.</string>
+    <string name="help_description">У даному додатку проводиться візуалізація власних станів тривимірного квантового гармонічного осцилятора. Гіперповерхні визначаються як переріз густини ймовірності знаходження частинки у тій чи іншій точці простору, яка у свою чергу визначається квадратом хвильової функції власних станів осцилятора.\n\nВізуалізація власних станів зійснюється у OpenGL, із використанням алгоритму Marching Cubes. Користувач має можливість вибрати власний стан для показу шляхом задання квантових чисел n, l і m, а також типу базису хвильових функцій. Також є можливість регулювання рівня дискретизації та задання повної імовірності знаходження частинки всередині зображуваної поверхні.</string>
     <string name="numbers_condition">Умови на квантові числа:\n0\u003cn, 0\u003c=l\u003cn, -l\u003c=m\u003c=l</string>
     <string name="more_apps">Більше додатків</string>
+    <string name="version" >Версія:</string>
 </resources>

@@ -4,19 +4,19 @@
     <string name="percent">Percent:</string>
     <string name="stepsize">Step size:</string>
     <string name="random_orbital">Random state</string>
-    <string name="orbital_selection">Orbital selection</string>
+    <string name="orbital_selection">Eigenstate selection</string>
     <string name="wave_function_type">Basis:</string>
     <string name="radio_complex">Complex</string>
     <string name="radio_real">Real</string>
     <string name="discrete_warning">Not enough memory! Increase discretization step size</string>
     <string name="numbers_condition">Quantum numbers must satisfy:\n0\u003cn, 0\u003c=l\u003cn, -l\u003c=m\u003c=l</string>
 
-    <string name="orbital">Orbital:</string>
+    <string name="orbital">Eigenstate:</string>
 
     <string name="btn_orbital_ok_label">OK</string>
     <string name="btn_orbital_cancel_label">Cancel</string>
 
-    <string name="help_description">This app visualizes electron orbitals of the hydrogen atom. The orbitals are defined as cross-sections of the probability density to find electron at a particular space point which is defined by the square of the wave function of the energy eigenstate.\n\nOrbital visualization is performed in OpenGL using the Marching Cubes algorithm. User can choose the orbital by specifying the quantum numbers n, l and m, as well the type of the wave functions basis. It is also possible to regulate the level of discretization as well as the total probability to find the electron inside the drawn orbital surface.</string>
+    <string name="help_description">This app visualizes the eigenstates of the three-dimensional quantum harmonic oscillator. The hypersurfaces are defined as cross-sections of the probability density to find particle at a particular space point, which is defined by the square of the wave function of the energy eigenstate.\n\nEigenstate visualization is performed in OpenGL using the Marching Cubes algorithm. User can choose the eigenstate by specifying the quantum numbers n, l and m, as well the type of the wave function basis. It is also possible to regulate the level of discretization as well as the total probability to find the particle inside the drawn surface.</string>
 	
 	<string name="wikipedia_link">More info at Wikipedia</string>
 
@@ -30,4 +30,5 @@
     <string name="more_apps">More apps</string>
 
     <string name="google_play">Rate this app</string>
+    <string name="version" >Version:</string>
 </resources>

@@ -23,6 +23,9 @@ public class InformationActivity extends Activity {
         setContentView(R.layout.information);
         setTitle(R.string.information);
 
+        TextView tver = (TextView) findViewById(R.id.version_text);
+        tver.setText(getText(R.string.version).toString() + " " + BuildConfig.VERSION_NAME);
+
         TextView tv = (TextView) findViewById(R.id.google_play);
         makeTextViewHyperlink(tv);
         tv.setOnClickListener(new View.OnClickListener() {
@@ -34,7 +37,7 @@ public class InformationActivity extends Activity {
                 } catch (Exception e) {
 //                    Log.d("Information", "Message =" + e);
 
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                 }
             }
         });
@@ -45,7 +48,7 @@ public class InformationActivity extends Activity {
             @Override
             public void onClick(View v) {
 //                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://en.wikipedia.org/wiki/Hydrogen_atom")));
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://en.wikipedia.org/wiki/Atomic_orbital")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://en.wikipedia.org/wiki/Quantum_harmonic_oscillator")));
             }
         });
 
@@ -58,7 +61,7 @@ public class InformationActivity extends Activity {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pub:Voladd")));
                 } catch (Exception e) {
 //                    Log.d("Information", "Message =" + e);
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/search?q=pub:Voladd")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=pub:Voladd")));
                 }
             }
         });
