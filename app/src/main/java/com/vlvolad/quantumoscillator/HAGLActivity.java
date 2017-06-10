@@ -10,6 +10,7 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Menu;
@@ -67,6 +68,7 @@ public class HAGLActivity extends Activity {
                 findViewById(R.id.button_random).setEnabled(true);
                 isRunning = false;
                 findViewById(R.id.progress).setVisibility(View.INVISIBLE);
+                //findViewById(R.id.energy_name).setVisibility(View.VISIBLE);
                 if (HAGLRenderer.mAtom.overflow)
                     Toast.makeText(getApplicationContext(), R.string.discrete_warning, Toast.LENGTH_SHORT).show();
                 mGLView.requestRender();
@@ -109,7 +111,7 @@ public class HAGLActivity extends Activity {
         mapl = "spdfghi";
 
         HAGLRenderer.mAtom.n = PreferenceManager.getDefaultSharedPreferences(
-                HAGLActivity.this).getInt("n", 1);
+                HAGLActivity.this).getInt("n", 0);
         HAGLRenderer.mAtom.l = PreferenceManager.getDefaultSharedPreferences(
                 HAGLActivity.this).getInt("l", 0);
         HAGLRenderer.mAtom.m = PreferenceManager.getDefaultSharedPreferences(
@@ -166,6 +168,7 @@ public class HAGLActivity extends Activity {
                             HAGLActivity.this).getBoolean("wave_function_real", true));
                     updateOrbitalName();
                     findViewById(R.id.progress).setVisibility(View.VISIBLE);
+                    //findViewById(R.id.energy_name).setVisibility(View.INVISIBLE);
                     ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop);
                     findViewById(R.id.button_random).setEnabled(false);
                     //findViewById(R.id.button_regenerate).setEnabled(false);
@@ -202,7 +205,7 @@ public class HAGLActivity extends Activity {
 //                    HAGLRenderer.mAtom.l = Integer.parseInt(tvl.getText().toString());
 //                    HAGLRenderer.mAtom.m = Integer.parseInt(tvm.getText().toString());
                     HAGLRenderer.mAtom.n = PreferenceManager.getDefaultSharedPreferences(
-                            HAGLActivity.this).getInt("n", 1);
+                            HAGLActivity.this).getInt("n", 0);
                     HAGLRenderer.mAtom.l = PreferenceManager.getDefaultSharedPreferences(
                             HAGLActivity.this).getInt("l", 0);
                     HAGLRenderer.mAtom.m = PreferenceManager.getDefaultSharedPreferences(
@@ -215,6 +218,7 @@ public class HAGLActivity extends Activity {
                     HAGLRenderer.mAtom.pct = seekBarPercent.getProgress() + 1;
                     updateOrbitalName();
                     findViewById(R.id.progress).setVisibility(View.VISIBLE);
+                    //findViewById(R.id.energy_name).setVisibility(View.INVISIBLE);
                     ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop);
                     //findViewById(R.id.button_regenerate).setEnabled(false);
                     isRunning = true;
@@ -254,6 +258,8 @@ public class HAGLActivity extends Activity {
 
         seekBarPercent.setProgress((int)(HAGLRenderer.mAtom.pct+1e-5)-1);
         textViewPercent.setText((int)HAGLRenderer.mAtom.pct + " %");
+
+        //findViewById(R.id.energy_name).setVisibility(View.INVISIBLE);
 
         seekBarPercent.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
@@ -435,6 +441,7 @@ public class HAGLActivity extends Activity {
             HAGLRenderer.mAtom.pct = seekBarPercent.getProgress() + 1;
             updateOrbitalName();
             findViewById(R.id.progress).setVisibility(View.VISIBLE);
+            //findViewById(R.id.energy_name).setVisibility(View.INVISIBLE);
             ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop);
             //findViewById(R.id.button_regenerate).setEnabled(false);
             isRunning = true;
@@ -469,15 +476,19 @@ public class HAGLActivity extends Activity {
     private void updateOrbitalName() {
         int tmpm = HAGLRenderer.mAtom.m;
         if (HAGLRenderer.mAtom.hAtom.sign) tmpm = -tmpm;
-        if (HAGLRenderer.mAtom.l<=6) ((TextView)findViewById(R.id.orbital_name)).setText(
+        /*if (HAGLRenderer.mAtom.l<=6) ((TextView)findViewById(R.id.orbital_name)).setText(
                 HAGLRenderer.mAtom.n + mapl.substring(HAGLRenderer.mAtom.l,HAGLRenderer.mAtom.l+1) + ", m=" + tmpm
                 );
         else ((TextView)findViewById(R.id.orbital_name)).setText(
-                "n=" + HAGLRenderer.mAtom.n + ", l=" + HAGLRenderer.mAtom.l + ", m=" + tmpm
-                );
+                "k=" + HAGLRenderer.mAtom.n + ", l=" + HAGLRenderer.mAtom.l + ", m=" + tmpm
+                );*/
 
         ((Button)findViewById(R.id.button_orbital)).setText(
-                " n=" + HAGLRenderer.mAtom.n + ", l=" + HAGLRenderer.mAtom.l + ", m=" + tmpm + " "
+                " k=" + HAGLRenderer.mAtom.n + ", l=" + HAGLRenderer.mAtom.l + ", m=" + tmpm + " "
+        );
+
+        ((TextView)findViewById(R.id.energy_name)).setText(Html.fromHtml(
+                "E = <sup><small><small>" + (2*(2*HAGLRenderer.mAtom.n+HAGLRenderer.mAtom.l)+1) + "</small></small></sup><small>/</small><sub><small><small>2</small></small></sub>&#8463;&omega;")
         );
 
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(
@@ -521,8 +532,8 @@ public class HAGLActivity extends Activity {
         // If you de-allocated graphic objects for onPause()
         // this is a good place to re-allocate them.
         ((Button)findViewById(R.id.button_orbital)).setText(
-                " n=" + PreferenceManager.getDefaultSharedPreferences(
-                        HAGLActivity.this).getInt("n", 1) + ", l=" + PreferenceManager.getDefaultSharedPreferences(
+                " k=" + PreferenceManager.getDefaultSharedPreferences(
+                        HAGLActivity.this).getInt("k", 1) + ", l=" + PreferenceManager.getDefaultSharedPreferences(
                         HAGLActivity.this).getInt("l", 0) + ", m=" + PreferenceManager.getDefaultSharedPreferences(
                         HAGLActivity.this).getInt("m", 0) + " "
         );

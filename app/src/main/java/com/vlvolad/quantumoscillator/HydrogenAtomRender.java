@@ -183,8 +183,8 @@ public class HydrogenAtomRender {
     }
 
     void pickRandomOrbital(int nmax) {
-        n = generator.nextInt(nmax) + 1;
-        l = generator.nextInt(n);
+        n = generator.nextInt(nmax);
+        l = generator.nextInt(nmax);
         m = -l + generator.nextInt(2*l+1);
     }
 
@@ -1416,7 +1416,7 @@ public class HydrogenAtomRender {
 
         //if (n==1) avt1 = 6.;
         //else avt1 = 2.5 * n;
-        avt1 = Math.sqrt((double)n);
+        avt1 = 1.3 * Math.sqrt((double)n + 1);
 
         //qDebug() << fTargetValue;
 

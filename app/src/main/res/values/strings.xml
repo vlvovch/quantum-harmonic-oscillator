@@ -9,7 +9,7 @@
     <string name="radio_complex">Complex</string>
     <string name="radio_real">Real</string>
     <string name="discrete_warning">Not enough memory! Increase discretization step size</string>
-    <string name="numbers_condition">Quantum numbers must satisfy:\n0\u003cn, 0\u003c=l\u003cn, -l\u003c=m\u003c=l</string>
+    <string name="numbers_condition">Quantum numbers must satisfy:\n0&lt;=k&lt;=25, 0&lt;=l&lt;=25, -l&lt;=m&lt;=l</string>
 
     <string name="orbital">Eigenstate:</string>
 

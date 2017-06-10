@@ -16,7 +16,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:inputType="number"
-            android:text="n: "
+            android:text="k: "
             android:textSize="18sp"
             android:layout_marginRight="10dp"/>
 

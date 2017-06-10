@@ -29,18 +29,18 @@ public class OrbitalDialog extends Activity {
         SharedPreferences settings =  PreferenceManager.getDefaultSharedPreferences(
                 this);
 
-        tvn.setText("" + settings.getInt("n", 1));
+        tvn.setText("" + settings.getInt("n", 0));
         tvl.setText("" + settings.getInt("l", 0));
         tvm.setText("" + settings.getInt("m", 0));
 
         findViewById(R.id.bSubn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int n = Integer.parseInt(tvn.getText().toString());
+                int k = Integer.parseInt(tvn.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
-                if (n-1>l) {
-                    n--;
-                    tvn.setText("" + n);
+                if (k-1>=0) {
+                    k--;
+                    tvn.setText("" + k);
                 }
                 else {
                     Toast.makeText(getApplicationContext(), R.string.numbers_condition, Toast.LENGTH_SHORT).show();
@@ -51,11 +51,11 @@ public class OrbitalDialog extends Activity {
         findViewById(R.id.bAddn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int n = Integer.parseInt(tvn.getText().toString());
+                int k = Integer.parseInt(tvn.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
-                if (n+1<=25) {
-                    n++;
-                    tvn.setText("" + n);
+                if (k+1<=25) {
+                    k++;
+                    tvn.setText("" + k);
                 }
                 else {
                     Toast.makeText(getApplicationContext(), R.string.numbers_condition, Toast.LENGTH_SHORT).show();
@@ -66,7 +66,7 @@ public class OrbitalDialog extends Activity {
         findViewById(R.id.bSubl).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int n = Integer.parseInt(tvn.getText().toString());
+                int k = Integer.parseInt(tvn.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
                 int m = Integer.parseInt(tvm.getText().toString());
                 if (l-1>=Math.abs(m)) {
@@ -82,10 +82,10 @@ public class OrbitalDialog extends Activity {
         findViewById(R.id.bAddl).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int n = Integer.parseInt(tvn.getText().toString());
+                int k = Integer.parseInt(tvn.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
                 int m = Integer.parseInt(tvm.getText().toString());
-                if (l+1<n) {
+                if (l+1<=25) {
                     l++;
                     tvl.setText("" + l);
                 }
@@ -98,7 +98,7 @@ public class OrbitalDialog extends Activity {
         findViewById(R.id.bSubm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int n = Integer.parseInt(tvn.getText().toString());
+                int k = Integer.parseInt(tvn.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
                 int m = Integer.parseInt(tvm.getText().toString());
                 if (Math.abs(m-1)<=l) {
@@ -114,7 +114,7 @@ public class OrbitalDialog extends Activity {
         findViewById(R.id.bAddm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int n = Integer.parseInt(tvn.getText().toString());
+                int k = Integer.parseInt(tvn.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
                 int m = Integer.parseInt(tvm.getText().toString());
                 if (Math.abs(m+1)<=l) {

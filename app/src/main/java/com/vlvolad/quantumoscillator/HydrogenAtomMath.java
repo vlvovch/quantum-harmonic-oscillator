@@ -122,9 +122,9 @@ public class HydrogenAtomMath {
         return avt;
     }
 
-    public void prepareallpov(int n, int l, int m) {
+    public void prepareallpov(int k, int l, int m) {
         Poly L;
-        L = Poly.Laguerre(n+l);
+        L = Poly.Laguerre(k+l);
         L.derivative(2*l+1);//L = diff(L, 2*l+1);
         L.multiplyxs(l);//L = mults(L, l);
         ksiR = L;
