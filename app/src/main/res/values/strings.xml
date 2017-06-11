@@ -16,11 +16,11 @@
     <string name="btn_orbital_ok_label">OK</string>
     <string name="btn_orbital_cancel_label">Cancel</string>
 
-    <string name="help_description">This app visualizes the eigenstates of the three-dimensional quantum harmonic oscillator. The hypersurfaces are defined as cross-sections of the probability density to find particle at a particular space point, which is defined by the square of the wave function of the energy eigenstate.\n\nEigenstate visualization is performed in OpenGL using the Marching Cubes algorithm. User can choose the eigenstate by specifying the quantum numbers n, l and m, as well the type of the wave function basis. It is also possible to regulate the level of discretization as well as the total probability to find the particle inside the drawn surface.</string>
+    <string name="help_description">This app visualizes the eigenstates of the three-dimensional quantum harmonic oscillator in spherical coordinates basis. The hypersurfaces are defined as cross-sections of the probability density to find particle at a particular space point, which is defined by the square of the wave function of the energy eigenstate.\n\nEigenstate visualization is performed in OpenGL using the Marching Cubes algorithm. User can choose the eigenstate by specifying the quantum numbers n, l and m, as well the type of the wave function basis. It is also possible to regulate the level of discretization as well as the total probability to find the particle inside the drawn surface.</string>
 	
 	<string name="wikipedia_link">More info at Wikipedia</string>
 
-    <string name="information">Information</string>
+    <string name="information">About</string>
     <string name="about">About</string>
     <string name="about_text_1a">Quantum Harmonic Oscillator</string>
     <string name="about_text_1b">Version: 0.1</string>
@@ -31,4 +31,12 @@
 
     <string name="google_play">Rate this app</string>
     <string name="version" >Version:</string>
+    <string name="share">Share</string>
+    <string name="information_wiki">Wikipedia</string>
+    <string name="share_subject">Quantum Harmonic Oscillator app for Android</string>
+    <string name="share_via">Share this app via</string>
+    <string name="share_text">Visualize eigenstates of 3D Quantum Harmonic Oscillator\nhttps://play.google.com/store/apps/details?id=com.vlvolad.quantumoscillator</string>
+    <string name="hydrogenatom_link">Hydrogen Atom Orbitals app</string>
+    <string name="hydrogenatom_link_text">See also:</string>
+    <string name="wikipedia_url">https://en.wikipedia.org/wiki/Quantum_harmonic_oscillator</string>
 </resources>

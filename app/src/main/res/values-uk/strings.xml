@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Квантовий Осцилятор</string>
     <string name="about_text_2">© Volodymyr Vovchenko</string>
-    <string name="about">Інформація</string>
+    <string name="about">Про додаток</string>
     <string name="about_text_1a">Квантовий гармонічний осцилятор</string>
     <string name="about_text_1b">Версія: 0.1</string>
     <string name="activity_name">Квантовий гармонічний осцилятор</string>
@@ -11,7 +11,7 @@
     <string name="btn_orbital_cancel_label">Відмінити</string>
     <string name="btn_orbital_ok_label">OK</string>
     <string name="discrete_warning">Недостатньо пам\'яті! Збільшіть крок дискретизації</string>
-    <string name="google_play">Оцінити цей додаток</string>
+    <string name="google_play">Оцінити</string>
     <string name="information">Інформація</string>
     <string name="orbital_selection">Вибір власного стану</string>
     <string name="percent">Відсоток:</string>
@@ -20,9 +20,17 @@
     <string name="random_orbital">Випадк. стан</string>
     <string name="stepsize">Розмір кроку:</string>
     <string name="wave_function_type">Базис:</string>
-    <string name="wikipedia_link">Більше інформації на Вікіпедії</string>
+    <string name="wikipedia_link">Більше інформації</string>
     <string name="help_description">У даному додатку проводиться візуалізація власних станів тривимірного квантового гармонічного осцилятора. Гіперповерхні визначаються як переріз густини ймовірності знаходження частинки у тій чи іншій точці простору, яка у свою чергу визначається квадратом хвильової функції власних станів осцилятора.\n\nВізуалізація власних станів зійснюється у OpenGL, із використанням алгоритму Marching Cubes. Користувач має можливість вибрати власний стан для показу шляхом задання квантових чисел n, l і m, а також типу базису хвильових функцій. Також є можливість регулювання рівня дискретизації та задання повної імовірності знаходження частинки всередині зображуваної поверхні.</string>
     <string name="numbers_condition">Умови на квантові числа:\n0&lt;=k&lt;=25, 0&lt;=l&lt;=25, -l&lt;=m&lt;=l</string>
-    <string name="more_apps">Більше додатків</string>
+    <string name="more_apps">Ще від автора</string>
     <string name="version" >Версія:</string>
+    <string name="share">Поділитися</string>
+    <string name="information_wiki">Вікіпедія</string>
+    <string name="share_subject">Quantum Harmonic Oscillator app for Android</string>
+    <string name="share_via">Поділитися цим додатком через</string>
+    <string name="share_text">Visualize eigenstates of 3D quantum harmonic oscillator\nhttps://play.google.com/store/apps/details?id=com.vlvolad.quantumoscillator</string>
+    <string name="hydrogenatom_link">Hydrogen Atom Orbitals app</string>
+    <string name="hydrogenatom_link_text">А також:</string>
+    <string name="wikipedia_url">https://uk.wikipedia.org/wiki/%D0%9A%D0%B2%D0%B0%D0%BD%D1%82%D0%BE%D0%B2%D0%B8%D0%B9_%D0%BE%D1%81%D1%86%D0%B8%D0%BB%D1%8F%D1%82%D0%BE%D1%80</string>
 </resources>

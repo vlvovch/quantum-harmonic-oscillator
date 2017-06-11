@@ -35,6 +35,7 @@ public class QuantumOscillatorRender {
     //int drawn,drawl,drawm;	//тоже самое
     volatile boolean drawsign;				//знак числа m
     volatile boolean drawrks;					//действительные или комплексные волновые функции
+    volatile boolean spherical;
     volatile int fin;                   //закончилась ли генерация
 
     volatile boolean overflow;
@@ -73,7 +74,7 @@ public class QuantumOscillatorRender {
     float [] valtable;
     int maxinda;
 
-    QuantumOscillatorMath hAtom;
+    QuantumOscillatorMath qOscillator;
 
     //вращение и зум
     int ox, oy;
@@ -136,16 +137,17 @@ public class QuantumOscillatorRender {
         avt1 = 0.;
         dlistgen = false;
         toCont = false;
+        spherical = true;
 
 //        camera_trans[0] = camera_trans[1] = camera_trans[2] = 0;
 //        camera_rot[0] = camera_rot[1] = camera_rot[2] = 0;
 //        camera_trans_lag[0] = camera_trans_lag[1] = camera_trans_lag[2] = 0;
 //        camera_rot_lag[0] = camera_rot_lag[1] = camera_rot_lag[2] = 0;
 
-        hAtom = new QuantumOscillatorMath();
+        qOscillator = new QuantumOscillatorMath();
 
         drawrks = false;
-        hAtom.realksi = false;
+        qOscillator.realksi = false;
 
         lightDir = fill3DVector(0.f, 0.f, 1.0f);
         lightHP = fill3DVector(0.f, 0.f, 1.0f);
@@ -183,9 +185,16 @@ public class QuantumOscillatorRender {
     }
 
     void pickRandomOrbital(int nmax) {
-        k = generator.nextInt(nmax);
-        l = generator.nextInt(nmax);
-        m = -l + generator.nextInt(2*l+1);
+        if (spherical) {
+            k = generator.nextInt(nmax);
+            l = generator.nextInt(nmax);
+            m = -l + generator.nextInt(2 * l + 1);
+        }
+        else {
+            k = generator.nextInt(nmax);
+            l = generator.nextInt(nmax);
+            m = generator.nextInt(nmax);
+        }
     }
 
     void reallocateMemory() {
@@ -491,14 +500,26 @@ public class QuantumOscillatorRender {
                         tHandle = GLES20.glGetUniformLocation(mProgram, "u_mvMatrix");
                         GLES20.glUniformMatrix4fv(tHandle, 1, false, mVMatrix, 0);
 
-                        if (rotY>0 && (((l-m) & 1))>0) inv = 1;   //волновая ф-я меняет знак в случае инверсии по z когда l-|m| - нечетное
-                        else inv = 0;
-                        if (drawrks && m!=0)   // для действительных ф-й знак может менятся и при инверсии x и y
-                        {
-                            if (rotZ>0 && rotX==0 && (m%2==0) && !drawsign) inv++;
-                            if (rotZ>0 && rotX==0 && (m & 1)>0 && drawsign) inv++;
-                            if (rotX>0 && rotZ==0 && !drawsign) inv++;
-                            if (rotX>0 && rotZ>0 && (m & 1)>0) inv++;
+                        if (spherical) {
+                            if (rotY > 0 && (((l - m) & 1)) > 0)
+                                inv = 1;   //волновая ф-я меняет знак в случае инверсии по z когда l-|m| - нечетное
+                            else inv = 0;
+                            if (drawrks && m != 0)   // для действительных ф-й знак может менятся и при инверсии x и y
+                            {
+                                if (rotZ > 0 && rotX == 0 && (m % 2 == 0) && !drawsign) inv++;
+                                if (rotZ > 0 && rotX == 0 && (m & 1) > 0 && drawsign) inv++;
+                                if (rotX > 0 && rotZ == 0 && !drawsign) inv++;
+                                if (rotX > 0 && rotZ > 0 && (m & 1) > 0) inv++;
+                            }
+                        }
+                        else {
+                            inv = 0;
+                            if (rotY > 0 && (m & 1) > 0)
+                                inv++;
+                            if (rotZ > 0 && (k & 1) > 0)
+                                inv++;
+                            if (rotX > 0 && (l & 1) > 0)
+                                inv++;
                         }
 
                         tHandle = GLES20.glGetAttribLocation(mProgram, "a_color");
@@ -552,14 +573,35 @@ public class QuantumOscillatorRender {
                         tHandle = GLES20.glGetUniformLocation(mProgram, "u_mvMatrix");
                         GLES20.glUniformMatrix4fv(tHandle, 1, false, mVMatrix, 0);
 
-                        if (rotY>0 && (((l-m) & 1))>0) inv = 1;   //волновая ф-я меняет знак в случае инверсии по z когда l-|m| - нечетное
-                        else inv = 0;
-                        if (drawrks && m!=0)   // для действительных ф-й знак может менятся и при инверсии x и y
-                        {
-                            if (rotZ>0 && rotX==0 && (m%2==0) && !drawsign) inv++;
-                            if (rotZ>0 && rotX==0 && (m & 1)>0 && drawsign) inv++;
-                            if (rotX>0 && rotZ==0 && !drawsign) inv++;
-                            if (rotX>0 && rotZ>0 && (m & 1)>0) inv++;
+//                        if (rotY>0 && (((l-m) & 1))>0) inv = 1;   //волновая ф-я меняет знак в случае инверсии по z когда l-|m| - нечетное
+//                        else inv = 0;
+//                        if (drawrks && m!=0)   // для действительных ф-й знак может менятся и при инверсии x и y
+//                        {
+//                            if (rotZ>0 && rotX==0 && (m%2==0) && !drawsign) inv++;
+//                            if (rotZ>0 && rotX==0 && (m & 1)>0 && drawsign) inv++;
+//                            if (rotX>0 && rotZ==0 && !drawsign) inv++;
+//                            if (rotX>0 && rotZ>0 && (m & 1)>0) inv++;
+//                        }
+                        if (spherical) {
+                            if (rotY > 0 && (((l - m) & 1)) > 0)
+                                inv = 1;   //волновая ф-я меняет знак в случае инверсии по z когда l-|m| - нечетное
+                            else inv = 0;
+                            if (drawrks && m != 0)   // для действительных ф-й знак может менятся и при инверсии x и y
+                            {
+                                if (rotZ > 0 && rotX == 0 && (m % 2 == 0) && !drawsign) inv++;
+                                if (rotZ > 0 && rotX == 0 && (m & 1) > 0 && drawsign) inv++;
+                                if (rotX > 0 && rotZ == 0 && !drawsign) inv++;
+                                if (rotX > 0 && rotZ > 0 && (m & 1) > 0) inv++;
+                            }
+                        }
+                        else {
+                            inv = 0;
+                            if (rotY > 0 && (m & 1) > 0)
+                                inv++;
+                            if (rotZ > 0 && (k & 1) > 0)
+                                inv++;
+                            if (rotX > 0 && (l & 1) > 0)
+                                inv++;
                         }
 
                         tHandle = GLES20.glGetAttribLocation(mProgram, "a_color");
@@ -617,14 +659,35 @@ public class QuantumOscillatorRender {
                         tHandle = GLES20.glGetUniformLocation(mProgram, "u_mvMatrix");
                         GLES20.glUniformMatrix4fv(tHandle, 1, false, mVMatrix, 0);
 
-                        if (rotY>0 && (((l-m) & 1))>0) inv = 1;   //волновая ф-я меняет знак в случае инверсии по z когда l-|m| - нечетное
-                        else inv = 0;
-                        if (drawrks && m!=0)   // для действительных ф-й знак может менятся и при инверсии x и y
-                        {
-                            if (rotZ>0 && rotX==0 && (m%2==0) && !drawsign) inv++;
-                            if (rotZ>0 && rotX==0 && (m & 1)>0 && drawsign) inv++;
-                            if (rotX>0 && rotZ==0 && !drawsign) inv++;
-                            if (rotX>0 && rotZ>0 && (m & 1)>0) inv++;
+//                        if (rotY>0 && (((l-m) & 1))>0) inv = 1;   //волновая ф-я меняет знак в случае инверсии по z когда l-|m| - нечетное
+//                        else inv = 0;
+//                        if (drawrks && m!=0)   // для действительных ф-й знак может менятся и при инверсии x и y
+//                        {
+//                            if (rotZ>0 && rotX==0 && (m%2==0) && !drawsign) inv++;
+//                            if (rotZ>0 && rotX==0 && (m & 1)>0 && drawsign) inv++;
+//                            if (rotX>0 && rotZ==0 && !drawsign) inv++;
+//                            if (rotX>0 && rotZ>0 && (m & 1)>0) inv++;
+//                        }
+                        if (spherical) {
+                            if (rotY > 0 && (((l - m) & 1)) > 0)
+                                inv = 1;   //волновая ф-я меняет знак в случае инверсии по z когда l-|m| - нечетное
+                            else inv = 0;
+                            if (drawrks && m != 0)   // для действительных ф-й знак может менятся и при инверсии x и y
+                            {
+                                if (rotZ > 0 && rotX == 0 && (m % 2 == 0) && !drawsign) inv++;
+                                if (rotZ > 0 && rotX == 0 && (m & 1) > 0 && drawsign) inv++;
+                                if (rotX > 0 && rotZ == 0 && !drawsign) inv++;
+                                if (rotX > 0 && rotZ > 0 && (m & 1) > 0) inv++;
+                            }
+                        }
+                        else {
+                            inv = 0;
+                            if (rotY > 0 && (m & 1) > 0)
+                                inv++;
+                            if (rotZ > 0 && (k & 1) > 0)
+                                inv++;
+                            if (rotX > 0 && (l & 1) > 0)
+                                inv++;
                         }
 
                         tHandle = GLES20.glGetAttribLocation(mProgram, "a_color");
@@ -654,13 +717,33 @@ public class QuantumOscillatorRender {
         GLES20.glUniform1i(tHandle, 0);
     }
 
+    float fKsi(float fX, float fY, float fZ)
+    {
+//        Log.d("fSample", "Start");
+//        Log.d("fSample", Float.toString(fX) + " " + Float.toString(fY) + " " + Float.toString(fZ));
+        double fResult = 0.;
+        if (spherical)
+            fResult = qOscillator.ksi(fZ*avt1/100,fX*avt1/100,fY*avt1/100, k,l,m);
+        else
+            fResult = qOscillator.ksicartesian(fZ*avt1/100,fX*avt1/100,fY*avt1/100, k,l,m);
+//        Log.d("fSample", Double.toString(fResult));
+//        Log.d("fSample", "Finish");
+
+        return (float) (fResult);
+    }
+
     float fSample(float fX, float fY, float fZ)
     {
 //        Log.d("fSample", "Start");
 //        Log.d("fSample", Float.toString(fX) + " " + Float.toString(fY) + " " + Float.toString(fZ));
-        double fResult = hAtom.ksi(fZ*avt1/100,fX*avt1/100,fY*avt1/100, k,l,m);
+        double fResult = 0.;
+        if (spherical)
+            fResult = qOscillator.ksi(fZ*avt1/100,fX*avt1/100,fY*avt1/100, k,l,m);
+        else
+            fResult = qOscillator.ksicartesian(fZ*avt1/100,fX*avt1/100,fY*avt1/100, k,l,m);
 //        Log.d("fSample", Double.toString(fResult));
 //        Log.d("fSample", "Finish");
+
         return (float) (fResult*fResult);
     }
 
@@ -862,9 +945,12 @@ public class QuantumOscillatorRender {
                     trinormal.put(9*trcnt + 3*iCorner + 2, asEdgeNorm[iVertex].fZ);
                     //массив цветов для вершин, второй массив нужен в случае перемены знака при инверсии координат
                     //if (dblprec::ksi(tx,ty,tz,k,l,m)>0)
-                    if (hAtom.ksi(trivertex.get(9*trcnt + 3*iCorner + 2)*avt1/100,
-                            trivertex.get(9*trcnt + 3*iCorner)*avt1/100,
-                            trivertex.get(9*trcnt + 3*iCorner + 1)*avt1/100, k,l,m)>0)
+//                    if (qOscillator.ksi(trivertex.get(9*trcnt + 3*iCorner + 2)*avt1/100,
+//                            trivertex.get(9*trcnt + 3*iCorner)*avt1/100,
+//                            trivertex.get(9*trcnt + 3*iCorner + 1)*avt1/100, k,l,m)>0)
+                    if (fKsi(trivertex.get(9*trcnt + 3*iCorner),
+                            trivertex.get(9*trcnt + 3*iCorner + 1),
+                            trivertex.get(9*trcnt + 3*iCorner + 2)) > 0)
                     {
                         tricolor1.put(9*trcnt + 3*iCorner, 1.0f);
                         tricolor1.put(9*trcnt + 3*iCorner + 1, 0.0f);
@@ -935,9 +1021,12 @@ public class QuantumOscillatorRender {
                     trinormalanim.put(9*trcntanim + 3*iCorner, asEdgeNorm[iVertex].fX);
                     trinormalanim.put(9*trcntanim + 3*iCorner + 1, asEdgeNorm[iVertex].fY);
                     trinormalanim.put(9*trcntanim + 3*iCorner + 2, asEdgeNorm[iVertex].fZ);
-                    if (hAtom.ksi(trivertexanim.get(9*trcntanim + 3*iCorner + 2)*avt1/100,
-                            trivertexanim.get(9*trcntanim + 3*iCorner)*avt1/100,
-                            trivertexanim.get(9*trcntanim + 3*iCorner + 1)*avt1/100, k,l,m)>0)
+//                    if (qOscillator.ksi(trivertexanim.get(9*trcntanim + 3*iCorner + 2)*avt1/100,
+//                            trivertexanim.get(9*trcntanim + 3*iCorner)*avt1/100,
+//                            trivertexanim.get(9*trcntanim + 3*iCorner + 1)*avt1/100, k,l,m)>0)
+                    if (fKsi(trivertexanim.get(9*trcntanim + 3*iCorner),
+                            trivertexanim.get(9*trcntanim + 3*iCorner + 1),
+                            trivertexanim.get(9*trcntanim + 3*iCorner + 2)) > 0)
                     {
                         tricoloranim1.put(9*trcntanim + 3*iCorner, 1.0f);
                         tricoloranim1.put(9*trcntanim + 3*iCorner + 1, 0.0f);
@@ -1034,7 +1123,7 @@ public class QuantumOscillatorRender {
 
     public void setRealKsi(boolean real) {
         drawrks = real;
-        hAtom.realksi = real;
+        qOscillator.realksi = real;
     }
 
     void regenerate()
@@ -1045,13 +1134,13 @@ public class QuantumOscillatorRender {
         overflow = false;
         if (m<0)
         {
-            hAtom.setsign(true);
+            qOscillator.setsign(true);
             drawsign = true;
             m = -m;
         }
         else
         {
-            hAtom.setsign(false);
+            qOscillator.setsign(false);
             drawsign = false;
         }
         if (overflow)
@@ -1091,7 +1180,7 @@ public class QuantumOscillatorRender {
         rounderror = false;
 
 //        Log.d("Render", "Prepareallpov start");
-        hAtom.prepareallpov(k, l, m);
+        qOscillator.prepareallpov(k, l, m);
 //        Log.d("Render", "Prepareallpov finish");
 
         double xt,yt,zt;
@@ -1103,16 +1192,22 @@ public class QuantumOscillatorRender {
 
         //if (k==1) avt1 = 6.;
         //else avt1 = 2.5 * k;
-        avt1 = 1.3 * Math.sqrt((double) k + 1);
-
+        if (spherical)
+            avt1 = 1.3 * Math.sqrt((double) k + 1);
+        else
+            avt1 = 1.3 * Math.sqrt((double) Math.max(Math.max(k,l),m) + 1);
         //qDebug() << fTargetValue;
 
-        //fTargetValue = hAtom.getEquiValue(pct/100., fStepSize*avt1/100, (int)(250.0f/fStepSize+1), k, l, m);
+        //fTargetValue = qOscillator.getEquiValue(pct/100., fStepSize*avt1/100, (int)(250.0f/fStepSize+1), k, l, m);
         //if (!drawrks)
 //        Log.d("Render", "Get target value start");
 //        Log.d("Render", "Size: " + 10*(int)(250.0f/fStepSize+1)*(int)(100.f*Math.sqrt(l+1.f)));
-          fTargetValue = (float)hAtom.getEquiValue(pct/100., 10*(int)(250.0f/fStepSize+1), 2.5*avt1, (int)(100.f*Math.sqrt(l+1.f)), k, l, m);
-//        fTargetValue = (float)hAtom.getEquiValue(pct/100., 2*(int)(250.0f/fStepSize+1), 2.5*avt1, (int)(20.f*Math.sqrt(l+1.f)), k, l, m);
+          if (spherical)
+              fTargetValue = (float) qOscillator.getEquiValue(pct/100., 10*(int)(250.0f/fStepSize+1), 2.5*avt1, (int)(100.f*Math.sqrt(l+1.f)), k, l, m);
+          else
+              fTargetValue = (float) qOscillator.getEquiValue(pct/100., 10*(int)(250.0f/fStepSize+1), 2.5*avt1, (int)(100.f*Math.sqrt(l+1.f)), k, l, m); // TODO: properly for Cartesian coordinates
+              //fTargetValue = (float)qOscillator.getEquiValue(pct/100., 10*(int)(250.0f/fStepSize+1), 2.5*avt1, k, l, m);
+//        fTargetValue = (float)qOscillator.getEquiValue(pct/100., 2*(int)(250.0f/fStepSize+1), 2.5*avt1, (int)(20.f*Math.sqrt(l+1.f)), k, l, m);
 //        Log.d("Render", "fTargetValue: " + fTargetValue);
 //        Log.d("Render", "Get target value finish");
 

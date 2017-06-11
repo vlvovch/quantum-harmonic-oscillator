@@ -16,6 +16,20 @@ public class QuantumOscillatorMath {
     Poly ksiR, ksiTH;
 
 
+    double HermiteH(int n, double x) {
+        double H0, H1, ret;
+        H1 = 0.;
+        ret = 1.;
+        for(int i=1;i<=n;i++)
+        {
+            H0 = H1;
+            H1 = ret;
+            ret = 2. * x * H1 - 2. * (i-1) * H0;
+        }
+        return ret;
+    }
+
+
     double LaguerreL(int n, double alpha, double x) {
         double L0,L1,ret;
         L1 = 0.;
@@ -101,6 +115,23 @@ public class QuantumOscillatorMath {
         else ret3 = Math.cos(m*phi)/Math.sqrt(Math.PI);
         return ret1*ret2*ret3;
     }
+
+    public double ksi1dim(double x, int n) {
+        double ret = 1.;
+        double fact = 1.;
+        for(int i = 1; i < n; ++i)
+            fact *= i;
+        ret  = 1. / Math.sqrt( Math.pow(2, n) * fact );
+        ret *= Math.pow(2. / Math.PI, 1./4.);
+        ret *= Math.exp(-x*x);
+        ret *= HermiteH(n, Math.sqrt(2.) * x);
+        return ret;
+    }
+
+    public double ksicartesian(double x, double y, double z, int nx, int ny, int nz) {
+        return ksi1dim(x, nx) * ksi1dim(y, ny) * ksi1dim(z, nz);
+    }
+
     public void setsign(boolean sn)
     {
         sign = sn;

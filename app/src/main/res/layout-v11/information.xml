@@ -56,13 +56,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:text="@string/help_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:autoLink="web"/>
+        <TextView
+            android:text="@string/help_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:autoLink="web"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,38 +97,40 @@
                     android:drawablePadding="5dp"
                     android:gravity="center"
                     android:text="@string/share"
+                    android:background="?android:selectableItemBackground"
                     />
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/hydrogenatom_link_text"
+                android:text="@string/hydrogenatom_link_text"
+                android:gravity="center"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="0dp"
+                />
 
-                <TextView
-                    android:id="@+id/hydrogenatom_link_text"
-                    android:text="@string/hydrogenatom_link_text"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="0dp"
-                    />
-
-                <TextView
-                    android:id="@+id/hydrogenatom_link"
-                    android:text="@string/hydrogenatom_link"
-                    android:drawableLeft="@drawable/ic_hydrogenatom"
-                    android:drawablePadding="5dp"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"/>
-            </LinearLayout>
+            <TextView
+                android:id="@+id/hydrogenatom_link"
+                android:text="@string/hydrogenatom_link"
+                android:drawableLeft="@drawable/ic_hydrogenatom"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="?android:selectableItemBackground" />
+        </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
@@ -172,6 +174,7 @@
                     android:drawableStart="@drawable/ic_action_rate"
                     android:gravity="center"
                     android:linksClickable="true"
+                    android:background="?android:selectableItemBackground"
                     android:text="@string/google_play"
                     android:textSize="16dp" />
             </LinearLayout>
@@ -193,6 +196,7 @@
                     android:drawableStart="@drawable/ic_action_playstore"
                     android:gravity="center"
                     android:linksClickable="true"
+                    android:background="?android:selectableItemBackground"
                     android:text="@string/more_apps"
                     android:textSize="16dp" />
             </LinearLayout>

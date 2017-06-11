@@ -6,17 +6,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.opengl.GLSurfaceView;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -24,6 +28,8 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by Vladimir on 29.04.2015.
@@ -34,6 +40,10 @@ public class QOGLActivity extends Activity {
     private Display display;
 
     private String mapl;
+
+    private boolean mRateState;
+
+    static String TAG = "QOGLActivity";
 
     static int frequency = 50;
 
@@ -87,6 +97,9 @@ public class QOGLActivity extends Activity {
         }
         setContentView(R.layout.quantumoscillator_gl);
 
+        if(Build.VERSION.SDK_INT >= 14)
+            getActionBar().setIcon(R.drawable.ic_action_oscillator);
+
         Runtime rt = Runtime.getRuntime();
         long maxMemory = rt.maxMemory();
         //Log.v("onCreate", "maxMemory:" + Long.toString(maxMemory));
@@ -97,13 +110,16 @@ public class QOGLActivity extends Activity {
 
         mapl = "spdfghi";
 
+        mRateState = PreferenceManager.getDefaultSharedPreferences(
+                QOGLActivity.this).getBoolean("rate_clicked", false);
+
         QOGLRenderer.mOscillator.k = PreferenceManager.getDefaultSharedPreferences(
                 QOGLActivity.this).getInt("k", 0);
         QOGLRenderer.mOscillator.l = PreferenceManager.getDefaultSharedPreferences(
                 QOGLActivity.this).getInt("l", 0);
         QOGLRenderer.mOscillator.m = PreferenceManager.getDefaultSharedPreferences(
                 QOGLActivity.this).getInt("m", 0);
-        QOGLRenderer.mOscillator.hAtom.setsign(false);
+        QOGLRenderer.mOscillator.qOscillator.setsign(false);
         QOGLRenderer.mOscillator.pct = PreferenceManager.getDefaultSharedPreferences(
                 QOGLActivity.this).getFloat("percent", 70.f);
         QOGLRenderer.mOscillator.fStepSize = PreferenceManager.getDefaultSharedPreferences(
@@ -187,7 +203,7 @@ public class QOGLActivity extends Activity {
                             QOGLActivity.this).getInt("l", 0);
                     QOGLRenderer.mOscillator.m = PreferenceManager.getDefaultSharedPreferences(
                             QOGLActivity.this).getInt("m", 0);
-                    QOGLRenderer.mOscillator.hAtom.setsign(false);
+                    QOGLRenderer.mOscillator.qOscillator.setsign(false);
                     QOGLRenderer.mOscillator.setRealKsi(PreferenceManager.getDefaultSharedPreferences(
                             QOGLActivity.this).getBoolean("wave_function_real", true));
                     QOGLRenderer.mOscillator.fin = 0;
@@ -298,7 +314,7 @@ public class QOGLActivity extends Activity {
                     QOGLActivity.this).getInt("l", 0);
             QOGLRenderer.mOscillator.m = PreferenceManager.getDefaultSharedPreferences(
                     QOGLActivity.this).getInt("m", 0);
-            QOGLRenderer.mOscillator.hAtom.setsign(false);
+            QOGLRenderer.mOscillator.qOscillator.setsign(false);
             QOGLRenderer.mOscillator.setRealKsi(PreferenceManager.getDefaultSharedPreferences(
                     QOGLActivity.this).getBoolean("wave_function_real", true));
             QOGLRenderer.mOscillator.fin = 0;
@@ -340,7 +356,7 @@ public class QOGLActivity extends Activity {
 
     private void updateOrbitalName() {
         int tmpm = QOGLRenderer.mOscillator.m;
-        if (QOGLRenderer.mOscillator.hAtom.sign) tmpm = -tmpm;
+        if (QOGLRenderer.mOscillator.qOscillator.sign) tmpm = -tmpm;
         /*if (HAGLRenderer.mOscillator.l<=6) ((TextView)findViewById(R.id.orbital_name)).setText(
                 HAGLRenderer.mOscillator.k + mapl.substring(HAGLRenderer.mOscillator.l,HAGLRenderer.mOscillator.l+1) + ", m=" + tmpm
                 );
@@ -375,6 +391,8 @@ public class QOGLActivity extends Activity {
         // If your OpenGL application is memory intensive,
         // you should consider de-allocating objects that
         // consume significant memory here.
+        mRateState = PreferenceManager.getDefaultSharedPreferences(
+                QOGLActivity.this).getBoolean("rate_clicked", false);
         timerHandler.removeCallbacks(timerRunnable);
         mGLView.queueEvent(new Runnable() {
             // This method will be called on the rendering
@@ -393,7 +411,7 @@ public class QOGLActivity extends Activity {
         // this is a good place to re-allocate them.
         ((Button)findViewById(R.id.button_orbital)).setText(
                 " k=" + PreferenceManager.getDefaultSharedPreferences(
-                        QOGLActivity.this).getInt("k", 1) + ", l=" + PreferenceManager.getDefaultSharedPreferences(
+                        QOGLActivity.this).getInt("k", 0) + ", l=" + PreferenceManager.getDefaultSharedPreferences(
                         QOGLActivity.this).getInt("l", 0) + ", m=" + PreferenceManager.getDefaultSharedPreferences(
                         QOGLActivity.this).getInt("m", 0) + " "
         );
@@ -408,6 +426,11 @@ public class QOGLActivity extends Activity {
             QOGLRenderer.mOscillator.toCont = false;
             regenerate();
         }
+
+        if (Build.VERSION.SDK_INT >= 11 && mRateState != PreferenceManager.getDefaultSharedPreferences(
+                QOGLActivity.this).getBoolean("rate_clicked", false))
+            invalidateOptionsMenu();
+
         timerHandler.postDelayed(timerRunnable, 0);
         mGLView.onResume();
         mGLView.requestRender();
@@ -417,6 +440,8 @@ public class QOGLActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+        MenuItem item = menu.findItem(R.id.action_rate);
+        item.setVisible(!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("rate_clicked", false));
         return true;
     }
 
@@ -424,6 +449,30 @@ public class QOGLActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.menu_item_share:
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getText(R.string.share_subject).toString());
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, getText(R.string.share_text).toString());
+                startActivity(Intent.createChooser(sharingIntent, getText(R.string.share_via).toString()));
+                return true;
+            case R.id.action_wiki:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getText(R.string.wikipedia_url).toString())));
+                return true;
+            case R.id.action_rate:
+                final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (Exception e) {
+//                    Log.d("Information", "Message =" + e);
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("rate_clicked", true).apply();
+                if(Build.VERSION.SDK_INT >= 11)
+                    invalidateOptionsMenu();
+
+                return true;
             case R.id.action_information:
                 //showHelp();
                 Intent intentParam = new Intent(QOGLActivity.this, InformationActivity.class);
@@ -469,9 +518,29 @@ public class QOGLActivity extends Activity {
     }
 
     @Override
+    public boolean onMenuOpened(int featureId, Menu menu)
+    {
+        if(Build.VERSION.SDK_INT >= 14 && featureId == Window.FEATURE_ACTION_BAR && menu != null){
+            if(menu.getClass().getSimpleName().equals("MenuBuilder")){
+                try{
+                    Method m = menu.getClass().getDeclaredMethod(
+                            "setOptionalIconsVisible", Boolean.TYPE);
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                }
+                catch(NoSuchMethodException e){
+                    Log.e(TAG, "onMenuOpened", e);
+                }
+                catch(Exception e){
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return super.onMenuOpened(featureId, menu);
+    }
+
+    @Override
     protected void onStop() {
-//        FlurryAgent.endTimedEvent("DoublePendulum");
-//        FlurryAgent.onEndSession(this);
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(
                 this).edit();
 

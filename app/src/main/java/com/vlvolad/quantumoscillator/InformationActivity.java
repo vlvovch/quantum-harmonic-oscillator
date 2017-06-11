@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.URLSpan;
@@ -26,7 +27,7 @@ public class InformationActivity extends Activity {
         tver.setText(getText(R.string.version).toString() + " " + BuildConfig.VERSION_NAME);
 
         TextView tv = (TextView) findViewById(R.id.google_play);
-        makeTextViewHyperlink(tv);
+        //makeTextViewHyperlink(tv);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,6 +39,7 @@ public class InformationActivity extends Activity {
 
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                 }
+                PreferenceManager.getDefaultSharedPreferences(InformationActivity.this).edit().putBoolean("rate_clicked", true).apply();
             }
         });
 
@@ -47,12 +49,12 @@ public class InformationActivity extends Activity {
             @Override
             public void onClick(View v) {
 //                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://en.wikipedia.org/wiki/Hydrogen_atom")));
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://en.wikipedia.org/wiki/Quantum_harmonic_oscillator")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getText(R.string.wikipedia_url).toString())));
             }
         });
 
         TextView tv3 = (TextView) findViewById(R.id.more_apps);
-        makeTextViewHyperlink(tv3);
+        //makeTextViewHyperlink(tv3);
         tv3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +64,35 @@ public class InformationActivity extends Activity {
 //                    Log.d("Information", "Message =" + e);
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=pub:Voladd")));
                 }
+            }
+        });
+
+        TextView tv4 = (TextView) findViewById(R.id.hydrogenatom_link);
+        //makeTextViewHyperlink(tv4);
+        tv4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String appPackageName = "com.vlvolad.hydrogenatom";
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (Exception e) {
+//                    Log.d("Information", "Message =" + e);
+
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+            }
+        });
+
+        TextView tv5 = (TextView) findViewById(R.id.share_link);
+        //makeTextViewHyperlink(tv5);
+        tv5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getText(R.string.share_subject).toString());
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, getText(R.string.share_text).toString());
+                startActivity(Intent.createChooser(sharingIntent, getText(R.string.share_via).toString()));
             }
         });
 
