@@ -9,21 +9,21 @@ import android.view.ScaleGestureDetector;
 /**
  * Created by Vladimir on 29.04.2015.
  */
-public class HAGLSurfaceView extends GLSurfaceView {
+public class QOGLSurfaceView extends GLSurfaceView {
 
-    HAGLRenderer mRenderer;
+    QOGLRenderer mRenderer;
     private ScaleGestureDetector mScaleDetector;
     private int count;
     public float mDensity;
 
-    public HAGLSurfaceView(Context context) {
+    public QOGLSurfaceView(Context context) {
         super(context);
 
         // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);
 
         // Set the Renderer for drawing on the GLSurfaceView
-        mRenderer = new HAGLRenderer();
+        mRenderer = new QOGLRenderer();
         setRenderer(mRenderer);
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 
@@ -34,7 +34,7 @@ public class HAGLSurfaceView extends GLSurfaceView {
         //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
-    public HAGLSurfaceView(Context context, AttributeSet attrs)
+    public QOGLSurfaceView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
 
@@ -42,7 +42,7 @@ public class HAGLSurfaceView extends GLSurfaceView {
         setEGLContextClientVersion(2);
 
         // Set the Renderer for drawing on the GLSurfaceView
-        mRenderer = new HAGLRenderer();
+        mRenderer = new QOGLRenderer();
         setRenderer(mRenderer);
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 
@@ -87,7 +87,7 @@ public class HAGLSurfaceView extends GLSurfaceView {
 //                    DPGLRenderer.mPendulum.moved = false;
 //                    DPGLRenderer.mPendulum.moveIndex = 0;
 //                    DPGLRenderer.mPendulum.timeInterval2 = -1;
-                    HAGLRenderer.mAtom.motion = false;
+                    QOGLRenderer.mOscillator.motion = false;
                     requestRender();
                     count = 0;
                     break;
@@ -120,11 +120,11 @@ public class HAGLSurfaceView extends GLSurfaceView {
                     //SP2DGLRenderer.mPendulum.moveY -= dy * 0.25f / SP2DGLRenderer.mPendulum.zoomIn;
                     //Log.d("SurfaceView", "dx: " + dx + "  dy: " + dy);
                     if (!mPreviousScale) {
-                        HAGLRenderer.mAtom.camera_rot[0] += dy / 10.f * 4.f / mDensity;
-                        HAGLRenderer.mAtom.camera_rot[1] += -dx / 10.f * 4.f / mDensity * 2.0 * (y - getHeight()/2 + getHeight()/8) / (getHeight()/2);
-                        //HAGLRenderer.mAtom.camera_rot[1] += -dx / 10.f * Math.cos(HAGLRenderer.mAtom.camera_rot[0] * Math.PI / 180.) * 1.5 * (y - getHeight()/2) / (getHeight()/2);
-                        //HAGLRenderer.mAtom.camera_rot[2] += dx / 10.f * 4.f / mDensity * 2.0 * (7.f*getHeight()/8.f-Math.abs(y - getHeight()/2 + getHeight()/8)) / (getHeight()/2);
-                        HAGLRenderer.mAtom.motion = true;
+                        QOGLRenderer.mOscillator.camera_rot[0] += dy / 10.f * 4.f / mDensity;
+                        QOGLRenderer.mOscillator.camera_rot[1] += -dx / 10.f * 4.f / mDensity * 2.0 * (y - getHeight()/2 + getHeight()/8) / (getHeight()/2);
+                        //HAGLRenderer.mOscillator.camera_rot[1] += -dx / 10.f * Math.cos(HAGLRenderer.mOscillator.camera_rot[0] * Math.PI / 180.) * 1.5 * (y - getHeight()/2) / (getHeight()/2);
+                        //HAGLRenderer.mOscillator.camera_rot[2] += dx / 10.f * 4.f / mDensity * 2.0 * (7.f*getHeight()/8.f-Math.abs(y - getHeight()/2 + getHeight()/8)) / (getHeight()/2);
+                        QOGLRenderer.mOscillator.motion = true;
                         requestRender();
                     }
                     else mPreviousScale = false;
@@ -140,16 +140,16 @@ public class HAGLSurfaceView extends GLSurfaceView {
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            float mScaleFactor = HAGLRenderer.mAtom.zoomIn;
+            float mScaleFactor = QOGLRenderer.mOscillator.zoomIn;
             mScaleFactor *= detector.getScaleFactor();
 
             // Don't let the object get too small or too large.
             mScaleFactor = Math.max(0.20f, Math.min(mScaleFactor, 10.0f));
 
-            HAGLRenderer.mAtom.zoomIn = mScaleFactor;
-            HAGLRenderer.mAtom.motion = true;
+            QOGLRenderer.mOscillator.zoomIn = mScaleFactor;
+            QOGLRenderer.mOscillator.motion = true;
             mPreviousScale = true;
-//            HAGLRenderer.mAtom.camera_trans[2] += detector.getScaleFactor();
+//            HAGLRenderer.mOscillator.camera_trans[2] += detector.getScaleFactor();
             requestRender();
 
             invalidate();
@@ -160,7 +160,7 @@ public class HAGLSurfaceView extends GLSurfaceView {
 //    @Override
 //    protected void onDraw(Canvas canvas) {
 //        super.onDraw(canvas);
-//        if (mRenderer.mAtom.fin>0) setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+//        if (mRenderer.mOscillator.fin>0) setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 //    }
 
     // Hides superclass method.

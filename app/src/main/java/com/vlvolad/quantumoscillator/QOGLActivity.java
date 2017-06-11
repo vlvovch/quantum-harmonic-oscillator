@@ -28,15 +28,9 @@ import android.widget.Toast;
 /**
  * Created by Vladimir on 29.04.2015.
  */
-public class HAGLActivity extends Activity {
+public class QOGLActivity extends Activity {
 
-    private HAGLSurfaceView mGLView;
-    //private DSPGLRenderer mRenderer;
-//    private SensorManager mSensorManager;
-//    private Sensor mGravity;
-//    private boolean useDynGravity;
-//    private boolean useDamping;
-//    private boolean isRunning;
+    private QOGLSurfaceView mGLView;
     private Display display;
 
     private String mapl;
@@ -48,10 +42,10 @@ public class HAGLActivity extends Activity {
     Runnable timerRunnable = new Runnable() {
         @Override
         public void run() {
-            if (HAGLRenderer.mAtom.fin==0) {
+            if (QOGLRenderer.mOscillator.fin==0) {
                 timerHandler.postDelayed(this, frequency);
                 //findViewById(R.id.progress).setVisibility(View.VISIBLE);
-                if (HAGLRenderer.mAtom.totalprogress>0) ((ProgressBar)findViewById(R.id.progress)).setProgress((HAGLRenderer.mAtom.progress * 100) / HAGLRenderer.mAtom.totalprogress);
+                if (QOGLRenderer.mOscillator.totalprogress>0) ((ProgressBar)findViewById(R.id.progress)).setProgress((QOGLRenderer.mOscillator.progress * 100) / QOGLRenderer.mOscillator.totalprogress);
                 else ((ProgressBar)findViewById(R.id.progress)).setProgress(0);
             }
             else {
@@ -59,7 +53,7 @@ public class HAGLActivity extends Activity {
                     // This method will be called on the rendering
                     // thread:
                     public void run() {
-                        //HAGLRenderer.mAtom.reallocateMemoryFinal();
+                        //HAGLRenderer.mOscillator.reallocateMemoryFinal();
                     }});
                 mGLView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
                 timerHandler.removeCallbacks(timerRunnable);
@@ -69,7 +63,7 @@ public class HAGLActivity extends Activity {
                 isRunning = false;
                 findViewById(R.id.progress).setVisibility(View.INVISIBLE);
                 //findViewById(R.id.energy_name).setVisibility(View.VISIBLE);
-                if (HAGLRenderer.mAtom.overflow)
+                if (QOGLRenderer.mOscillator.overflow)
                     Toast.makeText(getApplicationContext(), R.string.discrete_warning, Toast.LENGTH_SHORT).show();
                 mGLView.requestRender();
             }
@@ -91,14 +85,7 @@ public class HAGLActivity extends Activity {
         if(getResources().getBoolean(R.bool.portrait_only)){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-        setContentView(R.layout.hydrogenatom_gl);
-        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        // Create a GLSurfaceView instance and set it
-        // as the ContentView for this Activity
-        //mGLView = new DPGLSurfaceView(this);
-        //setContentView(mGLView);
-
-//        setTitle(R.string.activity_name);
+        setContentView(R.layout.quantumoscillator_gl);
 
         Runtime rt = Runtime.getRuntime();
         long maxMemory = rt.maxMemory();
@@ -110,22 +97,22 @@ public class HAGLActivity extends Activity {
 
         mapl = "spdfghi";
 
-        HAGLRenderer.mAtom.n = PreferenceManager.getDefaultSharedPreferences(
-                HAGLActivity.this).getInt("n", 0);
-        HAGLRenderer.mAtom.l = PreferenceManager.getDefaultSharedPreferences(
-                HAGLActivity.this).getInt("l", 0);
-        HAGLRenderer.mAtom.m = PreferenceManager.getDefaultSharedPreferences(
-                HAGLActivity.this).getInt("m", 0);
-        HAGLRenderer.mAtom.hAtom.setsign(false);
-        HAGLRenderer.mAtom.pct = PreferenceManager.getDefaultSharedPreferences(
-                HAGLActivity.this).getFloat("percent", 70.f);
-        HAGLRenderer.mAtom.fStepSize = PreferenceManager.getDefaultSharedPreferences(
-                HAGLActivity.this).getFloat("step_size", 6.f);
+        QOGLRenderer.mOscillator.k = PreferenceManager.getDefaultSharedPreferences(
+                QOGLActivity.this).getInt("k", 0);
+        QOGLRenderer.mOscillator.l = PreferenceManager.getDefaultSharedPreferences(
+                QOGLActivity.this).getInt("l", 0);
+        QOGLRenderer.mOscillator.m = PreferenceManager.getDefaultSharedPreferences(
+                QOGLActivity.this).getInt("m", 0);
+        QOGLRenderer.mOscillator.hAtom.setsign(false);
+        QOGLRenderer.mOscillator.pct = PreferenceManager.getDefaultSharedPreferences(
+                QOGLActivity.this).getFloat("percent", 70.f);
+        QOGLRenderer.mOscillator.fStepSize = PreferenceManager.getDefaultSharedPreferences(
+                QOGLActivity.this).getFloat("step_size", 6.f);
 
-        HAGLRenderer.mAtom.fin = 0;
+        QOGLRenderer.mOscillator.fin = 0;
         updateOrbitalName();
 
-        mGLView = (HAGLSurfaceView)findViewById(R.id.gl_surface_view);
+        mGLView = (QOGLSurfaceView)findViewById(R.id.gl_surface_view);
 
         final DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -135,23 +122,16 @@ public class HAGLActivity extends Activity {
             // This method will be called on the rendering
             // thread:
             public void run() {
-                HAGLRenderer.mAtom.memoryclass = memoryClass;
-                HAGLRenderer.mAtom.totalprogress = 0;
-                HAGLRenderer.mAtom.reallocateMemory();
-                HAGLRenderer.mAtom.setRealKsi(PreferenceManager.getDefaultSharedPreferences(
-                        HAGLActivity.this).getBoolean("wave_function_real", true));
-                HAGLRenderer.mAtom.regenerate();
+                QOGLRenderer.mOscillator.memoryclass = memoryClass;
+                QOGLRenderer.mOscillator.totalprogress = 0;
+                QOGLRenderer.mOscillator.reallocateMemory();
+                QOGLRenderer.mOscillator.setRealKsi(PreferenceManager.getDefaultSharedPreferences(
+                        QOGLActivity.this).getBoolean("wave_function_real", true));
+                QOGLRenderer.mOscillator.regenerate();
             }});
 
-//        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-
-//        tvn = (TextView)findViewById(R.id.tvnn);
-//        tvl = (TextView)findViewById(R.id.tvln);
-//        tvm = (TextView)findViewById(R.id.tvmn);
-
-        //mGLView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
         isRunning = false;
 
@@ -160,12 +140,12 @@ public class HAGLActivity extends Activity {
             public void onClick(View v) {
 
                 if (!isRunning) {
-                    HAGLRenderer.mAtom.pickRandomOrbital(5);
-                    HAGLRenderer.mAtom.fin = 0;
-                    HAGLRenderer.mAtom.fStepSize = 2.f + seekBarStepSize.getProgress() / 10.f;
-                    HAGLRenderer.mAtom.pct = seekBarPercent.getProgress() + 1;
-                    HAGLRenderer.mAtom.setRealKsi(PreferenceManager.getDefaultSharedPreferences(
-                            HAGLActivity.this).getBoolean("wave_function_real", true));
+                    QOGLRenderer.mOscillator.pickRandomOrbital(5);
+                    QOGLRenderer.mOscillator.fin = 0;
+                    QOGLRenderer.mOscillator.fStepSize = 2.f + seekBarStepSize.getProgress() / 10.f;
+                    QOGLRenderer.mOscillator.pct = seekBarPercent.getProgress() + 1;
+                    QOGLRenderer.mOscillator.setRealKsi(PreferenceManager.getDefaultSharedPreferences(
+                            QOGLActivity.this).getBoolean("wave_function_real", true));
                     updateOrbitalName();
                     findViewById(R.id.progress).setVisibility(View.VISIBLE);
                     //findViewById(R.id.energy_name).setVisibility(View.INVISIBLE);
@@ -178,9 +158,9 @@ public class HAGLActivity extends Activity {
                         // This method will be called on the rendering
                         // thread:
                         public void run() {
-                            //HAGLRenderer.mAtom.reallocateMemory();
-                            HAGLRenderer.mAtom.totalprogress = 0;
-                            HAGLRenderer.mAtom.regenerate();
+                            //HAGLRenderer.mOscillator.reallocateMemory();
+                            QOGLRenderer.mOscillator.totalprogress = 0;
+                            QOGLRenderer.mOscillator.regenerate();
                             mGLView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
                         }
                     });
@@ -191,7 +171,7 @@ public class HAGLActivity extends Activity {
         findViewById(R.id.button_orbital).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HAGLActivity.this, OrbitalDialog.class);
+                Intent intent = new Intent(QOGLActivity.this, OrbitalDialog.class);
                 startActivity(intent);
             }
         });
@@ -199,37 +179,31 @@ public class HAGLActivity extends Activity {
         findViewById(R.id.button_regenerate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //HAGLRenderer.mAtom.pickRandomOrbital(5);
+                //HAGLRenderer.mOscillator.pickRandomOrbital(5);
                 if (!isRunning) {
-//                    HAGLRenderer.mAtom.n = Integer.parseInt(tvn.getText().toString());
-//                    HAGLRenderer.mAtom.l = Integer.parseInt(tvl.getText().toString());
-//                    HAGLRenderer.mAtom.m = Integer.parseInt(tvm.getText().toString());
-                    HAGLRenderer.mAtom.n = PreferenceManager.getDefaultSharedPreferences(
-                            HAGLActivity.this).getInt("n", 0);
-                    HAGLRenderer.mAtom.l = PreferenceManager.getDefaultSharedPreferences(
-                            HAGLActivity.this).getInt("l", 0);
-                    HAGLRenderer.mAtom.m = PreferenceManager.getDefaultSharedPreferences(
-                            HAGLActivity.this).getInt("m", 0);
-                    HAGLRenderer.mAtom.hAtom.setsign(false);
-                    HAGLRenderer.mAtom.setRealKsi(PreferenceManager.getDefaultSharedPreferences(
-                            HAGLActivity.this).getBoolean("wave_function_real", true));
-                    HAGLRenderer.mAtom.fin = 0;
-                    HAGLRenderer.mAtom.fStepSize = 2.f + seekBarStepSize.getProgress() / 10.f;
-                    HAGLRenderer.mAtom.pct = seekBarPercent.getProgress() + 1;
+                    QOGLRenderer.mOscillator.k = PreferenceManager.getDefaultSharedPreferences(
+                            QOGLActivity.this).getInt("k", 0);
+                    QOGLRenderer.mOscillator.l = PreferenceManager.getDefaultSharedPreferences(
+                            QOGLActivity.this).getInt("l", 0);
+                    QOGLRenderer.mOscillator.m = PreferenceManager.getDefaultSharedPreferences(
+                            QOGLActivity.this).getInt("m", 0);
+                    QOGLRenderer.mOscillator.hAtom.setsign(false);
+                    QOGLRenderer.mOscillator.setRealKsi(PreferenceManager.getDefaultSharedPreferences(
+                            QOGLActivity.this).getBoolean("wave_function_real", true));
+                    QOGLRenderer.mOscillator.fin = 0;
+                    QOGLRenderer.mOscillator.fStepSize = 2.f + seekBarStepSize.getProgress() / 10.f;
+                    QOGLRenderer.mOscillator.pct = seekBarPercent.getProgress() + 1;
                     updateOrbitalName();
                     findViewById(R.id.progress).setVisibility(View.VISIBLE);
-                    //findViewById(R.id.energy_name).setVisibility(View.INVISIBLE);
                     ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop);
-                    //findViewById(R.id.button_regenerate).setEnabled(false);
                     isRunning = true;
                     timerHandler.postDelayed(timerRunnable, 0);
                     mGLView.queueEvent(new Runnable() {
                         // This method will be called on the rendering
                         // thread:
                         public void run() {
-                            //HAGLRenderer.mAtom.reallocateMemory();
-                            HAGLRenderer.mAtom.totalprogress = 0;
-                            HAGLRenderer.mAtom.regenerate();
+                            QOGLRenderer.mOscillator.totalprogress = 0;
+                            QOGLRenderer.mOscillator.regenerate();
                             mGLView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
                         }
                     });
@@ -242,8 +216,8 @@ public class HAGLActivity extends Activity {
                         // This method will be called on the rendering
                         // thread:
                         public void run() {
-                            //HAGLRenderer.mAtom.reallocateMemory();
-                            HAGLRenderer.mAtom.InterruptThread();
+                            //HAGLRenderer.mOscillator.reallocateMemory();
+                            QOGLRenderer.mOscillator.InterruptThread();
                         }
                     });
                     timerHandler.postDelayed(timerRunnable, 0);
@@ -256,8 +230,8 @@ public class HAGLActivity extends Activity {
         seekBarPercent = (SeekBar)findViewById(R.id.seekBarPercent);
         textViewPercent = (TextView)findViewById(R.id.textViewPercent);
 
-        seekBarPercent.setProgress((int)(HAGLRenderer.mAtom.pct+1e-5)-1);
-        textViewPercent.setText((int)HAGLRenderer.mAtom.pct + " %");
+        seekBarPercent.setProgress((int)(QOGLRenderer.mOscillator.pct+1e-5)-1);
+        textViewPercent.setText((int) QOGLRenderer.mOscillator.pct + " %");
 
         //findViewById(R.id.energy_name).setVisibility(View.INVISIBLE);
 
@@ -287,8 +261,8 @@ public class HAGLActivity extends Activity {
         seekBarStepSize = (SeekBar)findViewById(R.id.seekBarStepSize);
         textViewStepSize = (TextView)findViewById(R.id.textViewStepSize);
 
-        seekBarStepSize.setProgress((int)((HAGLRenderer.mAtom.fStepSize+1e-5-2.f)*10));
-        textViewStepSize.setText(String.format("%.1f", HAGLRenderer.mAtom.fStepSize));
+        seekBarStepSize.setProgress((int)((QOGLRenderer.mOscillator.fStepSize+1e-5-2.f)*10));
+        textViewStepSize.setText(String.format("%.1f", QOGLRenderer.mOscillator.fStepSize));
 
         seekBarStepSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
@@ -313,132 +287,23 @@ public class HAGLActivity extends Activity {
             }
         });
 
-//        findViewById(R.id.bSubn).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int n = Integer.parseInt(tvn.getText().toString());
-//                int l = Integer.parseInt(tvl.getText().toString());
-//                if (n-1>l) {
-//                    n--;
-//                    tvn.setText("" + n);
-//                }
-//            }
-//        });
-//
-//        findViewById(R.id.bAddn).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int n = Integer.parseInt(tvn.getText().toString());
-//                int l = Integer.parseInt(tvl.getText().toString());
-//                if (n+1<=25) {
-//                    n++;
-//                    tvn.setText("" + n);
-//                }
-//            }
-//        });
-//
-//        findViewById(R.id.bSubl).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int n = Integer.parseInt(tvn.getText().toString());
-//                int l = Integer.parseInt(tvl.getText().toString());
-//                int m = Integer.parseInt(tvm.getText().toString());
-//                if (l-1>=Math.abs(m)) {
-//                    l--;
-//                    tvl.setText("" + l);
-//                }
-//            }
-//        });
-//
-//        findViewById(R.id.bAddl).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int n = Integer.parseInt(tvn.getText().toString());
-//                int l = Integer.parseInt(tvl.getText().toString());
-//                int m = Integer.parseInt(tvm.getText().toString());
-//                if (l+1<n) {
-//                    l++;
-//                    tvl.setText("" + l);
-//                }
-//            }
-//        });
-//
-//        findViewById(R.id.bSubm).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int n = Integer.parseInt(tvn.getText().toString());
-//                int l = Integer.parseInt(tvl.getText().toString());
-//                int m = Integer.parseInt(tvm.getText().toString());
-//                if (Math.abs(m-1)<=l) {
-//                    m--;
-//                    tvm.setText("" + m);
-//                }
-//            }
-//        });
-//
-//        findViewById(R.id.bAddm).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int n = Integer.parseInt(tvn.getText().toString());
-//                int l = Integer.parseInt(tvl.getText().toString());
-//                int m = Integer.parseInt(tvm.getText().toString());
-//                if (Math.abs(m+1)<=l) {
-//                    m++;
-//                    tvm.setText("" + m);
-//                }
-//            }
-//        });
-
         timerHandler.postDelayed(timerRunnable, 0);
-
-//        FlurryAgent.onStartSession(this);
-//        FlurryAgent.logEvent("DoublePendulum",true);
     }
 
-//    public void updateGravitySensorStatus() {
-//		runOnUiThread(new Runnable() {
-//			@Override
-//			public void run() {
-//				if (useDynGravity) {
-//					((Button) findViewById(R.id.button_sensor_gravity)).setText(R.string.button_sensor_gravity);
-//				} else {
-//					((Button) findViewById(R.id.button_sensor_gravity)).setText(R.string.button_sensor_gravity_off);
-//				}
-//			}
-//		});
-//	}
-//
-//	public void updateDampingStatus() {
-//		runOnUiThread(new Runnable() {
-//			@Override
-//			public void run() {
-//				if (useDamping) {
-//					((Button) findViewById(R.id.button_damping)).setText(R.string.button_damping);
-//				} else {
-//					((Button) findViewById(R.id.button_damping)).setText(R.string.button_damping_off);
-//				}
-//			}
-//		});
-//	}
-
     private void regenerate() {
-        //HAGLRenderer.mAtom.pickRandomOrbital(5);
         if (!isRunning) {
-//                    HAGLRenderer.mAtom.n = Integer.parseInt(tvn.getText().toString());
-//                    HAGLRenderer.mAtom.l = Integer.parseInt(tvl.getText().toString());
-//                    HAGLRenderer.mAtom.m = Integer.parseInt(tvm.getText().toString());
-            HAGLRenderer.mAtom.n = PreferenceManager.getDefaultSharedPreferences(
-                    HAGLActivity.this).getInt("n", 1);
-            HAGLRenderer.mAtom.l = PreferenceManager.getDefaultSharedPreferences(
-                    HAGLActivity.this).getInt("l", 0);
-            HAGLRenderer.mAtom.m = PreferenceManager.getDefaultSharedPreferences(
-                    HAGLActivity.this).getInt("m", 0);
-            HAGLRenderer.mAtom.hAtom.setsign(false);
-            HAGLRenderer.mAtom.setRealKsi(PreferenceManager.getDefaultSharedPreferences(
-                    HAGLActivity.this).getBoolean("wave_function_real", true));
-            HAGLRenderer.mAtom.fin = 0;
-            HAGLRenderer.mAtom.fStepSize = 2.f + seekBarStepSize.getProgress() / 10.f;
-            HAGLRenderer.mAtom.pct = seekBarPercent.getProgress() + 1;
+            QOGLRenderer.mOscillator.k = PreferenceManager.getDefaultSharedPreferences(
+                    QOGLActivity.this).getInt("k", 0);
+            QOGLRenderer.mOscillator.l = PreferenceManager.getDefaultSharedPreferences(
+                    QOGLActivity.this).getInt("l", 0);
+            QOGLRenderer.mOscillator.m = PreferenceManager.getDefaultSharedPreferences(
+                    QOGLActivity.this).getInt("m", 0);
+            QOGLRenderer.mOscillator.hAtom.setsign(false);
+            QOGLRenderer.mOscillator.setRealKsi(PreferenceManager.getDefaultSharedPreferences(
+                    QOGLActivity.this).getBoolean("wave_function_real", true));
+            QOGLRenderer.mOscillator.fin = 0;
+            QOGLRenderer.mOscillator.fStepSize = 2.f + seekBarStepSize.getProgress() / 10.f;
+            QOGLRenderer.mOscillator.pct = seekBarPercent.getProgress() + 1;
             updateOrbitalName();
             findViewById(R.id.progress).setVisibility(View.VISIBLE);
             //findViewById(R.id.energy_name).setVisibility(View.INVISIBLE);
@@ -450,9 +315,9 @@ public class HAGLActivity extends Activity {
                 // This method will be called on the rendering
                 // thread:
                 public void run() {
-                    //HAGLRenderer.mAtom.reallocateMemory();
-                    HAGLRenderer.mAtom.totalprogress = 0;
-                    HAGLRenderer.mAtom.regenerate();
+                    //HAGLRenderer.mOscillator.reallocateMemory();
+                    QOGLRenderer.mOscillator.totalprogress = 0;
+                    QOGLRenderer.mOscillator.regenerate();
                     mGLView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
                 }
             });
@@ -465,8 +330,8 @@ public class HAGLActivity extends Activity {
                 // This method will be called on the rendering
                 // thread:
                 public void run() {
-                    //HAGLRenderer.mAtom.reallocateMemory();
-                    HAGLRenderer.mAtom.InterruptThread();
+                    //HAGLRenderer.mOscillator.reallocateMemory();
+                    QOGLRenderer.mOscillator.InterruptThread();
                 }
             });
             timerHandler.postDelayed(timerRunnable, 0);
@@ -474,36 +339,31 @@ public class HAGLActivity extends Activity {
     }
 
     private void updateOrbitalName() {
-        int tmpm = HAGLRenderer.mAtom.m;
-        if (HAGLRenderer.mAtom.hAtom.sign) tmpm = -tmpm;
-        /*if (HAGLRenderer.mAtom.l<=6) ((TextView)findViewById(R.id.orbital_name)).setText(
-                HAGLRenderer.mAtom.n + mapl.substring(HAGLRenderer.mAtom.l,HAGLRenderer.mAtom.l+1) + ", m=" + tmpm
+        int tmpm = QOGLRenderer.mOscillator.m;
+        if (QOGLRenderer.mOscillator.hAtom.sign) tmpm = -tmpm;
+        /*if (HAGLRenderer.mOscillator.l<=6) ((TextView)findViewById(R.id.orbital_name)).setText(
+                HAGLRenderer.mOscillator.k + mapl.substring(HAGLRenderer.mOscillator.l,HAGLRenderer.mOscillator.l+1) + ", m=" + tmpm
                 );
         else ((TextView)findViewById(R.id.orbital_name)).setText(
-                "k=" + HAGLRenderer.mAtom.n + ", l=" + HAGLRenderer.mAtom.l + ", m=" + tmpm
+                "k=" + HAGLRenderer.mOscillator.k + ", l=" + HAGLRenderer.mOscillator.l + ", m=" + tmpm
                 );*/
 
         ((Button)findViewById(R.id.button_orbital)).setText(
-                " k=" + HAGLRenderer.mAtom.n + ", l=" + HAGLRenderer.mAtom.l + ", m=" + tmpm + " "
+                " k=" + QOGLRenderer.mOscillator.k + ", l=" + QOGLRenderer.mOscillator.l + ", m=" + tmpm + " "
         );
 
         ((TextView)findViewById(R.id.energy_name)).setText(Html.fromHtml(
-                "E = <sup><small><small>" + (2*(2*HAGLRenderer.mAtom.n+HAGLRenderer.mAtom.l)+1) + "</small></small></sup><small>/</small><sub><small><small>2</small></small></sub>&#8463;&omega;")
+                "E = <sup><small><small>" + (2*(2* QOGLRenderer.mOscillator.k + QOGLRenderer.mOscillator.l)+3) + "</small></small></sup><small>/</small><sub><small><small>2</small></small></sub>&#8463;&omega;")
         );
 
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(
                 this).edit();
 
-        editor.putInt("n", HAGLRenderer.mAtom.n);
-        editor.putInt("l", HAGLRenderer.mAtom.l);
+        editor.putInt("k", QOGLRenderer.mOscillator.k);
+        editor.putInt("l", QOGLRenderer.mOscillator.l);
         editor.putInt("m", tmpm);
 
         editor.commit();
-
-//        tvn.setText("" + HAGLRenderer.mAtom.n);
-//        tvl.setText("" + HAGLRenderer.mAtom.l);
-//        tvm.setText("" + tmpm);
-
 
     }
 
@@ -520,7 +380,7 @@ public class HAGLActivity extends Activity {
             // This method will be called on the rendering
             // thread:
             public void run() {
-                HAGLRenderer.mAtom.InterruptThread();
+                QOGLRenderer.mOscillator.InterruptThread();
             }});
         mGLView.onPause();
     }
@@ -533,19 +393,19 @@ public class HAGLActivity extends Activity {
         // this is a good place to re-allocate them.
         ((Button)findViewById(R.id.button_orbital)).setText(
                 " k=" + PreferenceManager.getDefaultSharedPreferences(
-                        HAGLActivity.this).getInt("k", 1) + ", l=" + PreferenceManager.getDefaultSharedPreferences(
-                        HAGLActivity.this).getInt("l", 0) + ", m=" + PreferenceManager.getDefaultSharedPreferences(
-                        HAGLActivity.this).getInt("m", 0) + " "
+                        QOGLActivity.this).getInt("k", 1) + ", l=" + PreferenceManager.getDefaultSharedPreferences(
+                        QOGLActivity.this).getInt("l", 0) + ", m=" + PreferenceManager.getDefaultSharedPreferences(
+                        QOGLActivity.this).getInt("m", 0) + " "
         );
-        if (HAGLRenderer.mAtom.fin==0) {
+        if (QOGLRenderer.mOscillator.fin==0) {
             mGLView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 //            findViewById(R.id.button_regenerate).setEnabled(false);
             findViewById(R.id.button_regenerate).setEnabled(true);
             ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop);
             isRunning = true;
         }
-        if (HAGLRenderer.mAtom.toCont) {
-            HAGLRenderer.mAtom.toCont = false;
+        if (QOGLRenderer.mOscillator.toCont) {
+            QOGLRenderer.mOscillator.toCont = false;
             regenerate();
         }
         timerHandler.postDelayed(timerRunnable, 0);
@@ -566,7 +426,7 @@ public class HAGLActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.action_information:
                 //showHelp();
-                Intent intentParam = new Intent(HAGLActivity.this, InformationActivity.class);
+                Intent intentParam = new Intent(QOGLActivity.this, InformationActivity.class);
                 startActivity(intentParam);
                 return true;
 //            case R.id.action_more_apps:
@@ -615,8 +475,8 @@ public class HAGLActivity extends Activity {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(
                 this).edit();
 
-        editor.putFloat("percent", (float)HAGLRenderer.mAtom.pct);
-        editor.putFloat("step_size", HAGLRenderer.mAtom.fStepSize);
+        editor.putFloat("percent", (float) QOGLRenderer.mOscillator.pct);
+        editor.putFloat("step_size", QOGLRenderer.mOscillator.fStepSize);
 
         editor.commit();
         super.onStop();

@@ -9,7 +9,7 @@ import java.util.Comparator;
 /**
  * Created by Vladimir on 28.04.2015.
  */
-public class HydrogenAtomMath {
+public class QuantumOscillatorMath {
     static public final double a = 5.2917720859e-11;
     double avt;
     volatile boolean realksi, sign;
@@ -18,13 +18,13 @@ public class HydrogenAtomMath {
 
     double LaguerreL(int n, double alpha, double x) {
         double L0,L1,ret;
-        L1 = 0;
-        ret = 1;
+        L1 = 0.;
+        ret = 1.;
         for(int i=1;i<=n;i++)
         {
             L0 = L1;
             L1 = ret;
-            ret = ((2*i - 1 + alpha - x)*L1 - (i - 1 + alpha)*L0)/i;
+            ret = ((2.*i - 1. + alpha - x)*L1 - (i - 1. + alpha)*L0)/i;
         }
         return ret;
     }
@@ -140,7 +140,7 @@ public class HydrogenAtomMath {
         //distR = L;
         avt = avR(L);          //среднее расстояние(мат. ожидание)
         //rdensk = L;
-        //genidn(n);
+        //genidn(k);
         //rdis = Frd(L);		   //функция распределения по r
 
         Poly Plm = new Poly(),Ptm = new Poly(),Ptm2 = new Poly();
@@ -219,7 +219,7 @@ public class HydrogenAtomMath {
         if (sti<0) sti++;
 //        Log.d("HydrogenAtomMath", Double.toString(vals[sti].first / 2. / Math.PI));
 //        Log.d("HydrogenAtomMath", "getEquiValue() finish");
-        //qDebug () << vals[sti] << " " << sti << "\n";
+        //qDebug () << vals[sti] << " " << sti << "\k";
         return vals[sti].first / 2. / Math.PI;
     }
 

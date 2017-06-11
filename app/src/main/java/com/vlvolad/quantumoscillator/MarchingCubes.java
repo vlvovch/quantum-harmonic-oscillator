@@ -33,7 +33,7 @@ public class MarchingCubes {
 // For each of the 8 vertices of the cube can be two possible states : either inside or outside of the surface
 // For any cube the are 2^8=256 possible sets of vertex states
 // This table lists the edges intersected by the surface for all 256 possible vertex states
-// There are 12 edges.  For each entry in the table, if edge #n is intersected, then bit #n is set to 1
+// There are 12 edges.  For each entry in the table, if edge #k is intersected, then bit #k is set to 1
 
     static final int aiCubeEdgeFlags[]=
     {

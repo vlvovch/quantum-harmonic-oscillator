@@ -10,10 +10,9 @@ import javax.microedition.khronos.opengles.GL10;
 /**
  * Created by Vladimir on 28.04.2015.
  */
-public class HAGLRenderer implements GLSurfaceView.Renderer{
+public class QOGLRenderer implements GLSurfaceView.Renderer{
     private static final String TAG = "HAGLRenderer";
-    public static HydrogenAtomRender mAtom = new HydrogenAtomRender();
-    //    public DoubleSphericalPendulum mPendulum;
+    public static QuantumOscillatorRender mOscillator = new QuantumOscillatorRender();
     public int Width, Height;
 
     @Override
@@ -100,7 +99,7 @@ public class HAGLRenderer implements GLSurfaceView.Renderer{
         GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(mProgram);                  // creates OpenGL ES program executables
 
-        mAtom.mProgram = mProgram;
+        mOscillator.mProgram = mProgram;
 
 //        int vertexShaderTraj = loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
 //        int fragmentShaderTraj = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
@@ -142,16 +141,16 @@ public class HAGLRenderer implements GLSurfaceView.Renderer{
 //
 //        // Draw pendulum
 //        mPendulum.draw(unused, Width, Height);
-        GLES20.glUseProgram(mAtom.mProgram);
+        GLES20.glUseProgram(mOscillator.mProgram);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
     	/*GLES10.glLoadIdentity();
     	GLES10.glTranslatef(0.0f, 0.0f, -10.0f);*/
-        Matrix.setIdentityM(mAtom.mVMatrix, 0);
-        //Matrix.translateM(mAtom.mVMatrix, 0, 0.0f, 0.0f, -10.0f);
+        Matrix.setIdentityM(mOscillator.mVMatrix, 0);
+        //Matrix.translateM(mOscillator.mVMatrix, 0, 0.0f, 0.0f, -10.0f);
 
 
         // Draw pendulum
-        mAtom.draw(unused, Width, Height);
+        mOscillator.draw(unused, Width, Height);
     }
 
     @Override
@@ -167,7 +166,7 @@ public class HAGLRenderer implements GLSurfaceView.Renderer{
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
         //perspectiveGL(45.f, ratio, 0.1f, 500.f);
-        perspectiveGL(mAtom.mProjMatrix, 45.0f,(float)(Width)/Height,10.0f,4000.0f);
+        perspectiveGL(mOscillator.mProjMatrix, 45.0f,(float)(Width)/Height,10.0f,4000.0f);
         //GLU.gluPerspective(unused, 45.f, ratio, 0.1f, 1200.f);
 
     }
@@ -273,7 +272,7 @@ public class HAGLRenderer implements GLSurfaceView.Renderer{
     private final String fragmentShaderCodeTraj =
             "varying vec4 v_color; \n" +
                     "void main() { \n" +
-                    "    gl_FragColor = vec4(1.0, 0., 0., 1.); \n" + //v_color; \n" +
+                    "    gl_FragColor = vec4(1.0, 0., 0., 1.); \n" + //v_color; \k" +
                     "}";
 
     public static int loadShader(int type, String shaderCode){

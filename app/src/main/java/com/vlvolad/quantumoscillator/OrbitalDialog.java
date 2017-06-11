@@ -13,7 +13,7 @@ import android.widget.Toast;
  * Created by Vladimir on 18.05.2015.
  */
 public class OrbitalDialog extends Activity {
-    private TextView tvn, tvl, tvm;
+    private TextView tvk, tvl, tvm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,25 +22,25 @@ public class OrbitalDialog extends Activity {
         setTitle(R.string.orbital_selection);
         setContentView(R.layout.orbital_selection);
 
-        tvn = (TextView)findViewById(R.id.tvnn);
+        tvk = (TextView)findViewById(R.id.tvnn);
         tvl = (TextView)findViewById(R.id.tvln);
         tvm = (TextView)findViewById(R.id.tvmn);
 
         SharedPreferences settings =  PreferenceManager.getDefaultSharedPreferences(
                 this);
 
-        tvn.setText("" + settings.getInt("n", 0));
+        tvk.setText("" + settings.getInt("k", 0));
         tvl.setText("" + settings.getInt("l", 0));
         tvm.setText("" + settings.getInt("m", 0));
 
         findViewById(R.id.bSubn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int k = Integer.parseInt(tvn.getText().toString());
+                int k = Integer.parseInt(tvk.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
                 if (k-1>=0) {
                     k--;
-                    tvn.setText("" + k);
+                    tvk.setText("" + k);
                 }
                 else {
                     Toast.makeText(getApplicationContext(), R.string.numbers_condition, Toast.LENGTH_SHORT).show();
@@ -51,11 +51,11 @@ public class OrbitalDialog extends Activity {
         findViewById(R.id.bAddn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int k = Integer.parseInt(tvn.getText().toString());
+                int k = Integer.parseInt(tvk.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
                 if (k+1<=25) {
                     k++;
-                    tvn.setText("" + k);
+                    tvk.setText("" + k);
                 }
                 else {
                     Toast.makeText(getApplicationContext(), R.string.numbers_condition, Toast.LENGTH_SHORT).show();
@@ -66,7 +66,7 @@ public class OrbitalDialog extends Activity {
         findViewById(R.id.bSubl).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int k = Integer.parseInt(tvn.getText().toString());
+                int k = Integer.parseInt(tvk.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
                 int m = Integer.parseInt(tvm.getText().toString());
                 if (l-1>=Math.abs(m)) {
@@ -82,7 +82,7 @@ public class OrbitalDialog extends Activity {
         findViewById(R.id.bAddl).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int k = Integer.parseInt(tvn.getText().toString());
+                int k = Integer.parseInt(tvk.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
                 int m = Integer.parseInt(tvm.getText().toString());
                 if (l+1<=25) {
@@ -98,7 +98,7 @@ public class OrbitalDialog extends Activity {
         findViewById(R.id.bSubm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int k = Integer.parseInt(tvn.getText().toString());
+                int k = Integer.parseInt(tvk.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
                 int m = Integer.parseInt(tvm.getText().toString());
                 if (Math.abs(m-1)<=l) {
@@ -114,7 +114,7 @@ public class OrbitalDialog extends Activity {
         findViewById(R.id.bAddm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int k = Integer.parseInt(tvn.getText().toString());
+                int k = Integer.parseInt(tvk.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
                 int m = Integer.parseInt(tvm.getText().toString());
                 if (Math.abs(m+1)<=l) {
@@ -147,7 +147,18 @@ public class OrbitalDialog extends Activity {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(
                 this).edit();
 
-        editor.putInt("n", Integer.parseInt(tvn.getText().toString()));
+        boolean tochange = false;
+        //int a = PreferenceManager.getDefaultSharedPreferences(this).getInt("k", 0);
+        if (PreferenceManager.getDefaultSharedPreferences(this).getInt("k", 0) != Integer.parseInt(tvk.getText().toString()))
+            tochange = true;
+        if (PreferenceManager.getDefaultSharedPreferences(this).getInt("l", 0) != Integer.parseInt(tvl.getText().toString()))
+            tochange = true;
+        if (PreferenceManager.getDefaultSharedPreferences(this).getInt("m", 0) != Integer.parseInt(tvm.getText().toString()))
+            tochange = true;
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("wave_function_real", true) != ((RadioButton)findViewById(R.id.radioReal)).isChecked())
+            tochange = true;
+
+        editor.putInt("k", Integer.parseInt(tvk.getText().toString()));
         editor.putInt("l", Integer.parseInt(tvl.getText().toString()));
         editor.putInt("m", Integer.parseInt(tvm.getText().toString()));
 
@@ -156,7 +167,7 @@ public class OrbitalDialog extends Activity {
 
         editor.commit();
 
-        HAGLRenderer.mAtom.toCont = true;
+        QOGLRenderer.mOscillator.toCont = tochange;
 
         OrbitalDialog.this.finish();
     }

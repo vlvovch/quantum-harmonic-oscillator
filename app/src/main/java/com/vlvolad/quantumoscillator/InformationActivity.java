@@ -14,7 +14,6 @@ import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.TextView;
 
-//import com.flurry.android.FlurryAgent;
 
 public class InformationActivity extends Activity {
     @Override
@@ -66,15 +65,11 @@ public class InformationActivity extends Activity {
             }
         });
 
-//        FlurryAgent.onStartSession(this);
-//        FlurryAgent.logEvent("InformationActivity",true);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-//        FlurryAgent.endTimedEvent("InformationActivity");
-//        FlurryAgent.onEndSession(this);
     }
 
     /**

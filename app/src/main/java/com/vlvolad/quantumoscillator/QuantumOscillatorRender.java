@@ -20,7 +20,7 @@ class GLvector
     float fZ;
 }
 
-public class HydrogenAtomRender {
+public class QuantumOscillatorRender {
     int Width, Height;
     double scale;
 
@@ -31,7 +31,7 @@ public class HydrogenAtomRender {
     int ncubes, ncubesanim;
     boolean pause;
 
-    volatile int n,l,m;				//квантовые числа
+    volatile int k,l,m;				//квантовые числа
     //int drawn,drawl,drawm;	//тоже самое
     volatile boolean drawsign;				//знак числа m
     volatile boolean drawrks;					//действительные или комплексные волновые функции
@@ -73,7 +73,7 @@ public class HydrogenAtomRender {
     float [] valtable;
     int maxinda;
 
-    HydrogenAtomMath hAtom;
+    QuantumOscillatorMath hAtom;
 
     //вращение и зум
     int ox, oy;
@@ -109,11 +109,11 @@ public class HydrogenAtomRender {
 
     public static Random generator = new Random();
 
-    public HydrogenAtomRender() {
+    public QuantumOscillatorRender() {
         scale = 1.;
         motion = false;
         pause = false;
-        n = 8;
+        k = 8;
         l = 5;
         m = 2;
         fin = 0;
@@ -142,7 +142,7 @@ public class HydrogenAtomRender {
 //        camera_trans_lag[0] = camera_trans_lag[1] = camera_trans_lag[2] = 0;
 //        camera_rot_lag[0] = camera_rot_lag[1] = camera_rot_lag[2] = 0;
 
-        hAtom = new HydrogenAtomMath();
+        hAtom = new QuantumOscillatorMath();
 
         drawrks = false;
         hAtom.realksi = false;
@@ -183,7 +183,7 @@ public class HydrogenAtomRender {
     }
 
     void pickRandomOrbital(int nmax) {
-        n = generator.nextInt(nmax);
+        k = generator.nextInt(nmax);
         l = generator.nextInt(nmax);
         m = -l + generator.nextInt(2*l+1);
     }
@@ -345,7 +345,7 @@ public class HydrogenAtomRender {
 
         //glMatrixMode(GL_PROJECTION);
         //glLoadIdentity();
-        HAGLRenderer.perspectiveGL(mProjMatrix, 45.0f,(float)(Width)/Height,10.0f,4000.0f);
+        QOGLRenderer.perspectiveGL(mProjMatrix, 45.0f,(float)(Width)/Height,10.0f,4000.0f);
         Matrix.setIdentityM(mVMatrix, 0);
 //        gluPerspective(45.0,(GLfloat)Width/Height,10.0,4000.0);
         int tHandle = GLES20.glGetUniformLocation(mProgram, "light");
@@ -453,223 +453,6 @@ public class HydrogenAtomRender {
         {
             if (!animatemode)
             {
-//                Log.d("Draw", "Empty");
-//                trivertexf = ByteBuffer.allocateDirect(
-//                        // (number of coordinate values * 4 bytes per float)
-//                        3 * 8 * trcnt * 3 * 4).
-//                        order(ByteOrder.nativeOrder()).
-//                        asFloatBuffer();
-//
-//                trinormalf = ByteBuffer.allocateDirect(
-//                        // (number of coordinate values * 4 bytes per float)
-//                        3 * 8 * trcnt * 3 * 4).
-//                        order(ByteOrder.nativeOrder()).
-//                        asFloatBuffer();
-//
-//                tricolorf = ByteBuffer.allocateDirect(
-//                        // (number of coordinate values * 4 bytes per float)
-//                        3 * 8 * trcnt * 3 * 4).
-//                        order(ByteOrder.nativeOrder()).
-//                        asFloatBuffer();
-//
-////                tricolor2f = ByteBuffer.allocateDirect(
-////                        // (number of coordinate values * 4 bytes per float)
-////                        8 * trcnt * 3 * 4).
-////                        order(ByteOrder.nativeOrder()).
-////                        asFloatBuffer();
-//                //glNewList(dList, GL_COMPILE);
-//                int index = 0;
-//                int inv = 0;
-//                for(int rotX = 0; rotX < 2; rotX++)
-//                    for(int rotY = 0; rotY < 2; rotY++)
-//                        for(int rotZ = 0; rotZ < 2; rotZ++)
-//                        {
-//                            //glPushMatrix();
-//                            Matrix.scaleM(mVMatrix, 0, 1.0f-2.0f*rotX, 1.0f-2.0f*rotY, 1.0f-2.0f*rotZ);
-//                            //glScalef(1.0f-2.0f*rotX, 1.0f-2.0f*rotY, 1.0f-2.0f*rotZ);  //симметрия квадрата волновой ф-ии относительно инверсии координат
-//                            //glRotatef(90.0, 0.0, 1.0, 0.0);
-//
-//                            if (rotY>0 && ((l-m) & 1)>0) inv = 1;   //волновая ф-я меняет знак в случае инверсии по z когда l-|m| - нечетное
-//                            else inv = 0;
-//                            if (drawrks && m!=0)   // для действительных ф-й знак может менятся и при инверсии x и y
-//                            {
-//                                if (rotZ>0 && rotX==0 && (m%2==0) && !drawsign) inv++;
-//                                if (rotZ>0 && rotX==0 && (m & 1)>0 && drawsign) inv++;
-//                                if (rotX>0 && rotZ==0 && !drawsign) inv++;
-//                                if (rotX>0 && rotZ>0 && (m & 1)>0) inv++;
-//                            }
-//
-//                            GLES20.glFrontFace(GLES20.GL_CCW);
-//                            if ((inv%2)>0)
-//                            {
-//                                //glBegin(GL_TRIANGLES);
-//                                //rep(i,3*trcnt)
-//                                if (((rotX+rotY+rotZ)%2)>0)
-//                                {
-//                                    for(int i=0;i<trcnt;++i)
-//                                    {
-//                                        tricolorf.put(3*index, tricolor2.get(9*i));
-//                                        tricolorf.put(3*index + 1, tricolor2.get(9*i + 1));
-//                                        tricolorf.put(3*index + 2, tricolor2.get(9*i + 2));
-//                                        trinormalf.put(3*index, trinormal.get(9*i));
-//                                        trinormalf.put(3*index + 1, trinormal.get(9*i + 1));
-//                                        trinormalf.put(3*index + 2, trinormal.get(9*i + 2));
-//                                        trivertexf.put(3*index, trivertex.get(9*i));
-//                                        trivertexf.put(3*index + 1, trivertex.get(9*i + 1));
-//                                        trivertexf.put(3*index + 2, trivertex.get(9*i + 2));
-//                                        index++;
-//
-//                                        tricolorf.put(3*index, tricolor2.get(9*i + 6));
-//                                        tricolorf.put(3*index + 1, tricolor2.get(9*i + 1 + 6));
-//                                        tricolorf.put(3*index + 2, tricolor2.get(9*i + 2 + 6));
-//                                        trinormalf.put(3*index, trinormal.get(9*i + 6));
-//                                        trinormalf.put(3*index + 1, trinormal.get(9*i + 1 + 6));
-//                                        trinormalf.put(3*index + 2, trinormal.get(9*i + 2 + 6));
-//                                        trivertexf.put(3*index, trivertex.get(9*i + 6));
-//                                        trivertexf.put(3*index + 1, trivertex.get(9*i + 1 + 6));
-//                                        trivertexf.put(3*index + 2, trivertex.get(9*i + 2 + 6));
-//                                        index++;
-//
-//                                        tricolorf.put(3*index, tricolor2.get(9*i + 3));
-//                                        tricolorf.put(3*index + 1, tricolor2.get(9*i + 1 + 3));
-//                                        tricolorf.put(3*index + 2, tricolor2.get(9*i + 2 + 3));
-//                                        trinormalf.put(3*index, trinormal.get(9*i + 3));
-//                                        trinormalf.put(3*index + 1, trinormal.get(9*i + 1 + 3));
-//                                        trinormalf.put(3*index + 2, trinormal.get(9*i + 2 + 3));
-//                                        trivertexf.put(3*index, trivertex.get(9*i + 3));
-//                                        trivertexf.put(3*index + 1, trivertex.get(9*i + 1 + 3));
-//                                        trivertexf.put(3*index + 2, trivertex.get(9*i + 2 + 3));
-//                                        index++;
-//                                    }
-//                                }
-//                                else
-//                                {
-//                                    for(int i=0;i<trcnt;++i)
-//                                    {
-//                                        tricolorf.put(3*index, tricolor2.get(9*i));
-//                                        tricolorf.put(3*index + 1, tricolor2.get(9*i + 1));
-//                                        tricolorf.put(3*index + 2, tricolor2.get(9*i + 2));
-//                                        trinormalf.put(3*index, trinormal.get(9*i));
-//                                        trinormalf.put(3*index + 1, trinormal.get(9*i + 1));
-//                                        trinormalf.put(3*index + 2, trinormal.get(9*i + 2));
-//                                        trivertexf.put(3*index, trivertex.get(9*i));
-//                                        trivertexf.put(3*index + 1, trivertex.get(9*i + 1));
-//                                        trivertexf.put(3*index + 2, trivertex.get(9*i + 2));
-//                                        index++;
-//
-//                                        tricolorf.put(3*index, tricolor2.get(9*i + 6));
-//                                        tricolorf.put(3*index + 1, tricolor2.get(9*i + 1 + 6));
-//                                        tricolorf.put(3*index + 2, tricolor2.get(9*i + 2 + 6));
-//                                        trinormalf.put(3*index, trinormal.get(9*i + 6));
-//                                        trinormalf.put(3*index + 1, trinormal.get(9*i + 1 + 6));
-//                                        trinormalf.put(3*index + 2, trinormal.get(9*i + 2 + 6));
-//                                        trivertexf.put(3*index, trivertex.get(9*i + 6));
-//                                        trivertexf.put(3*index + 1, trivertex.get(9*i + 1 + 6));
-//                                        trivertexf.put(3*index + 2, trivertex.get(9*i + 2 + 6));
-//                                        index++;
-//
-//                                        tricolorf.put(3*index, tricolor2.get(9*i + 3));
-//                                        tricolorf.put(3*index + 1, tricolor2.get(9*i + 1 + 3));
-//                                        tricolorf.put(3*index + 2, tricolor2.get(9*i + 2 + 3));
-//                                        trinormalf.put(3*index, trinormal.get(9*i + 3));
-//                                        trinormalf.put(3*index + 1, trinormal.get(9*i + 1 + 3));
-//                                        trinormalf.put(3*index + 2, trinormal.get(9*i + 2 + 3));
-//                                        trivertexf.put(3*index, trivertex.get(9*i + 3));
-//                                        trivertexf.put(3*index + 1, trivertex.get(9*i + 1 + 3));
-//                                        trivertexf.put(3*index + 2, trivertex.get(9*i + 2 + 3));
-//                                        index++;
-//                                    }
-//                                }
-////                                glEnd();
-//                            }
-//                            else
-//                            {
-////                                glBegin(GL_TRIANGLES);
-//                                if (((rotX+rotY+rotZ)%2)>0)
-//                                {
-//                                    for(int i=0;i<trcnt;++i)
-//                                    {
-//                                        tricolorf.put(3*index, tricolor1.get(9*i));
-//                                        tricolorf.put(3*index + 1, tricolor1.get(9*i + 1));
-//                                        tricolorf.put(3*index + 2, tricolor1.get(9*i + 2));
-//                                        trinormalf.put(3*index, trinormal.get(9*i));
-//                                        trinormalf.put(3*index + 1, trinormal.get(9*i + 1));
-//                                        trinormalf.put(3*index + 2, trinormal.get(9*i + 2));
-//                                        trivertexf.put(3*index, trivertex.get(9*i));
-//                                        trivertexf.put(3*index + 1, trivertex.get(9*i + 1));
-//                                        trivertexf.put(3*index + 2, trivertex.get(9*i + 2));
-//                                        index++;
-//
-//                                        tricolorf.put(3*index, tricolor1.get(9*i + 6));
-//                                        tricolorf.put(3*index + 1, tricolor1.get(9*i + 1 + 6));
-//                                        tricolorf.put(3*index + 2, tricolor1.get(9*i + 2 + 6));
-//                                        trinormalf.put(3*index, trinormal.get(9*i + 6));
-//                                        trinormalf.put(3*index + 1, trinormal.get(9*i + 1 + 6));
-//                                        trinormalf.put(3*index + 2, trinormal.get(9*i + 2 + 6));
-//                                        trivertexf.put(3*index, trivertex.get(9*i + 6));
-//                                        trivertexf.put(3*index + 1, trivertex.get(9*i + 1 + 6));
-//                                        trivertexf.put(3*index + 2, trivertex.get(9*i + 2 + 6));
-//                                        index++;
-//
-//                                        tricolorf.put(3*index, tricolor1.get(9*i + 3));
-//                                        tricolorf.put(3*index + 1, tricolor1.get(9*i + 1 + 3));
-//                                        tricolorf.put(3*index + 2, tricolor1.get(9*i + 2 + 3));
-//                                        trinormalf.put(3*index, trinormal.get(9*i + 3));
-//                                        trinormalf.put(3*index + 1, trinormal.get(9*i + 1 + 3));
-//                                        trinormalf.put(3*index + 2, trinormal.get(9*i + 2 + 3));
-//                                        trivertexf.put(3*index, trivertex.get(9*i + 3));
-//                                        trivertexf.put(3*index + 1, trivertex.get(9*i + 1 + 3));
-//                                        trivertexf.put(3*index + 2, trivertex.get(9*i + 2 + 3));
-//                                        index++;
-//                                    }
-//                                }
-//                                else
-//                                {
-//                                    for(int i=0;i<trcnt;++i)
-//                                    {
-//                                        tricolorf.put(3*index, tricolor1.get(9*i));
-//                                        tricolorf.put(3*index + 1, tricolor1.get(9*i + 1));
-//                                        tricolorf.put(3*index + 2, tricolor1.get(9*i + 2));
-//                                        trinormalf.put(3*index, trinormal.get(9*i));
-//                                        trinormalf.put(3*index + 1, trinormal.get(9*i + 1));
-//                                        trinormalf.put(3*index + 2, trinormal.get(9*i + 2));
-//                                        trivertexf.put(3*index, trivertex.get(9*i));
-//                                        trivertexf.put(3*index + 1, trivertex.get(9*i + 1));
-//                                        trivertexf.put(3*index + 2, trivertex.get(9*i + 2));
-//                                        index++;
-//
-//                                        tricolorf.put(3*index, tricolor1.get(9*i + 6));
-//                                        tricolorf.put(3*index + 1, tricolor1.get(9*i + 1 + 6));
-//                                        tricolorf.put(3*index + 2, tricolor1.get(9*i + 2 + 6));
-//                                        trinormalf.put(3*index, trinormal.get(9*i + 6));
-//                                        trinormalf.put(3*index + 1, trinormal.get(9*i + 1 + 6));
-//                                        trinormalf.put(3*index + 2, trinormal.get(9*i + 2 + 6));
-//                                        trivertexf.put(3*index, trivertex.get(9*i + 6));
-//                                        trivertexf.put(3*index + 1, trivertex.get(9*i + 1 + 6));
-//                                        trivertexf.put(3*index + 2, trivertex.get(9*i + 2 + 6));
-//                                        index++;
-//
-//                                        tricolorf.put(3*index, tricolor1.get(9*i + 3));
-//                                        tricolorf.put(3*index + 1, tricolor1.get(9*i + 1 + 3));
-//                                        tricolorf.put(3*index + 2, tricolor1.get(9*i + 2 + 3));
-//                                        trinormalf.put(3*index, trinormal.get(9*i + 3));
-//                                        trinormalf.put(3*index + 1, trinormal.get(9*i + 1 + 3));
-//                                        trinormalf.put(3*index + 2, trinormal.get(9*i + 2 + 3));
-//                                        trivertexf.put(3*index, trivertex.get(9*i + 3));
-//                                        trivertexf.put(3*index + 1, trivertex.get(9*i + 1 + 3));
-//                                        trivertexf.put(3*index + 2, trivertex.get(9*i + 2 + 3));
-//                                        index++;
-//                                    }
-//                                }
-////                                glEnd();
-//                            }
-//                            //glPopMatrix();
-//                            Matrix.scaleM(mVMatrix, 0, 1.0f/(1.0f-2.0f*rotX), 1.0f/(1.0f-2.0f*rotY), 1.0f/(1.0f-2.0f*rotZ));
-//                        }
-//                //glEndList();
-//                trivertexf.position(0);
-//                trinormalf.position(0);
-//                tricolorf.position(0);
                 dlistgen = true;
             }
             fin = 2;
@@ -802,27 +585,6 @@ public class HydrogenAtomRender {
             GLES20.glDisableVertexAttribArray(tHandle);
             tHandle = GLES20.glGetAttribLocation(mProgram, "a_color");
             GLES20.glDisableVertexAttribArray(tHandle);
-//            Matrix.multiplyMM(mMVPMatrix, 0, mProjMatrix, 0, mVMatrix, 0);
-//
-//            tHandle = GLES20.glGetUniformLocation(mProgram, "u_mvpMatrix");
-//            GLES20.glUniformMatrix4fv(tHandle, 1, false, mMVPMatrix, 0);
-//            tHandle = GLES20.glGetUniformLocation(mProgram, "u_mvMatrix");
-//            GLES20.glUniformMatrix4fv(tHandle, 1, false, mVMatrix, 0);
-//
-//            tHandle = GLES20.glGetAttribLocation(mProgram, "a_position");
-//            GLES20.glVertexAttribPointer(tHandle, 3,
-//                    GLES20.GL_FLOAT, false,
-//                    0, trivertexf);
-//            tHandle = GLES20.glGetAttribLocation(mProgram, "a_normal");
-//            GLES20.glEnableVertexAttribArray(tHandle);
-//            GLES20.glVertexAttribPointer(tHandle, 3,
-//                    GLES20.GL_FLOAT, false,
-//                    0, trinormalf);
-//
-//            GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 3*8*trcnt);
-//
-//            tHandle = GLES20.glGetAttribLocation(mProgram, "a_normal");
-//            GLES20.glDisableVertexAttribArray(tHandle);
         }
         else
         {
@@ -890,27 +652,15 @@ public class HydrogenAtomRender {
 
         tHandle = GLES20.glGetUniformLocation(mProgram, "light");
         GLES20.glUniform1i(tHandle, 0);
-
-//        glMatrixMode(GL_PROJECTION);
-//        glLoadIdentity();
-//        glOrtho(0, Width, 0, Height, -1.0, 1.0);
-//
-//        glMatrixMode(GL_MODELVIEW);
-//        glLoadIdentity();
-//
-//        glColor3ub(255,255,255);
-//        Log.d("Draw", "Finish");
     }
 
     float fSample(float fX, float fY, float fZ)
     {
-        //GLdouble fResult = dblprec::disfiel(distR,distTh,m,fZ*avt/100,fX*avt/100,fY*avt/100);
 //        Log.d("fSample", "Start");
 //        Log.d("fSample", Float.toString(fX) + " " + Float.toString(fY) + " " + Float.toString(fZ));
-        double fResult = hAtom.ksi(fZ*avt1/100,fX*avt1/100,fY*avt1/100,n,l,m);
+        double fResult = hAtom.ksi(fZ*avt1/100,fX*avt1/100,fY*avt1/100, k,l,m);
 //        Log.d("fSample", Double.toString(fResult));
 //        Log.d("fSample", "Finish");
-        //fout << fResult << "\n";
         return (float) (fResult*fResult);
     }
 
@@ -995,10 +745,6 @@ public class HydrogenAtomRender {
         for(iVertex = 0; iVertex < 8; iVertex++)
         {
             afCubeValue[iVertex] = valtable[index_table(ix+(int)MarchingCubes.a2fVertexOffset[iVertex][0],iy+(int)MarchingCubes.a2fVertexOffset[iVertex][1],iz+(int)MarchingCubes.a2fVertexOffset[iVertex][2])];
-            //valtable[ix+(int)a2fVertexOffset[iVertex][0]][iy+(int)a2fVertexOffset[iVertex][1]][iz+(int)a2fVertexOffset[iVertex][2]];/*fSample(fX + a2fVertexOffset[iVertex][0]*fScale,
-            //                                   fY + a2fVertexOffset[iVertex][1]*fScale,
-            //                                   fZ + a2fVertexOffset[iVertex][2]*fScale);*/
-            //afCubeValue[iVertex] *= afCubeValue[iVertex];
         }
 
         //Find which vertices are inside of the surface and which are outside
@@ -1106,7 +852,7 @@ public class HydrogenAtomRender {
 
                     //TrVertex tmp;
 							/*fdbg = fopen("debug.txt", "w");
-							fprintf(fdbg, "%d\t%d\n", 9*trcnt + 3*iCorner, trivertex.size());
+							fprintf(fdbg, "%d\t%d\k", 9*trcnt + 3*iCorner, trivertex.size());
 							fclose(fdbg);*/
                     trivertex.put(9*trcnt + 3*iCorner, asEdgeVertex[iVertex].fX);
                     trivertex.put(9*trcnt + 3*iCorner + 1, asEdgeVertex[iVertex].fY);
@@ -1115,10 +861,10 @@ public class HydrogenAtomRender {
                     trinormal.put(9*trcnt + 3*iCorner + 1, asEdgeNorm[iVertex].fY);
                     trinormal.put(9*trcnt + 3*iCorner + 2, asEdgeNorm[iVertex].fZ);
                     //массив цветов для вершин, второй массив нужен в случае перемены знака при инверсии координат
-                    //if (dblprec::ksi(tx,ty,tz,n,l,m)>0)
+                    //if (dblprec::ksi(tx,ty,tz,k,l,m)>0)
                     if (hAtom.ksi(trivertex.get(9*trcnt + 3*iCorner + 2)*avt1/100,
                             trivertex.get(9*trcnt + 3*iCorner)*avt1/100,
-                            trivertex.get(9*trcnt + 3*iCorner + 1)*avt1/100,n,l,m)>0)
+                            trivertex.get(9*trcnt + 3*iCorner + 1)*avt1/100, k,l,m)>0)
                     {
                         tricolor1.put(9*trcnt + 3*iCorner, 1.0f);
                         tricolor1.put(9*trcnt + 3*iCorner + 1, 0.0f);
@@ -1176,22 +922,6 @@ public class HydrogenAtomRender {
                     break;
                 }
 
-//                if ((9*trcntanim + 9)>=size1) {
-//                    overflow = true;
-//
-//                    trivertexanim = expandFB(trivertexanim, size2, size1);
-//                    trivertexanim.position(0);
-//
-//                    trinormalanim = expandFB(trinormalanim, size2, size1);
-//                    trinormalanim.position(0);
-//
-//                    tricoloranim1 = expandFB(tricoloranim1, size2, size1);
-//                    tricoloranim1.position(0);
-//
-//                    tricoloranim2 = expandFB(tricoloranim2, size2, size1);
-//                    tricoloranim2.position(0);
-//                }
-
 
 
                 for(iCorner = 0; iCorner < 3; iCorner++)
@@ -1207,7 +937,7 @@ public class HydrogenAtomRender {
                     trinormalanim.put(9*trcntanim + 3*iCorner + 2, asEdgeNorm[iVertex].fZ);
                     if (hAtom.ksi(trivertexanim.get(9*trcntanim + 3*iCorner + 2)*avt1/100,
                             trivertexanim.get(9*trcntanim + 3*iCorner)*avt1/100,
-                            trivertexanim.get(9*trcntanim + 3*iCorner + 1)*avt1/100,n,l,m)>0)
+                            trivertexanim.get(9*trcntanim + 3*iCorner + 1)*avt1/100, k,l,m)>0)
                     {
                         tricoloranim1.put(9*trcntanim + 3*iCorner, 1.0f);
                         tricoloranim1.put(9*trcntanim + 3*iCorner + 1, 0.0f);
@@ -1230,38 +960,15 @@ public class HydrogenAtomRender {
                 //}
             }
         }
-        //разбитие на еще более мелкие куски в случае необходимости
-		/*if (fl == 0 && !anim)
-		{
-			for(double ftX=fX;ftX<fX+fScale-1e-5;ftX+=fScale/2)
-			for(double ftY=fY;ftY<fY+fScale-1e-5;ftY+=fScale/2)
-			for(double ftZ=fZ;ftZ<fZ+fScale-1e-5;ftZ+=fScale/2)
-			{
-				vMarchCube2(ftX, ftY, ftZ, fScale/2);
-			}
-		}*/
     }
 
     //генерация всей повехности алгоритмом Marching Cubes
     public void vMarchingCubes()
     {
-        //GLfloat iX, iY, iZ;
-        //Tris.resize(0);
-        //candraw = 0;
 //        Log.d("MarchingCubes", "Start");
         trcntanim = trcnt = 0;
         totalprogress = progress = 0;
-        //vector<double> sortvaltable(0);
         double [] sortvaltable;
-        /*for(iX = 0; iX < iDataSetSize; iX++)
-        for(iY = 0; iY < iDataSetSize; iY++)
-        for(iZ = 0; iZ < iDataSetSize; iZ++)*/
-		/*for(iY = -250; iY < 0; iY+=fStepSize1)
-		for(iX = -250; iX < 0; iX+=fStepSize1)
-        for(iZ = -250; iZ < 0; iZ+=fStepSize1)
-        {
-                vMarchCube(iX, iY, iZ, fStepSize1);
-        }*/
         anim = true;
         fStepSize1 = Math.max(fStepSizeanim, fStepSize);
         int ncbs = (int)(250.0f/fStepSize1+1);
@@ -1273,14 +980,7 @@ public class HydrogenAtomRender {
         int nraz = ncbs/101 + 1;
         maxinda = ncbs+1;
         int cbx,cby,cbz;
-		/*rep(iY,nraz)
-			rep(iX,nraz)
-				rep(iZ,nraz)*/
-//        Log.d("MarchingCubes", "Anim start");
         {
-					/*cby = min(100, ncbs - iY*100);
-					cbx = min(100, ncbs - iX*100);
-					cbz = min(100, ncbs - iZ*100);*/
             for(int iy=0;iy<ncbs+1 && !stopThread;iy++)
                 for(int ix=0;ix<ncbs+1 && !stopThread;ix++)
                     for(int iz=0;iz<ncbs+1 && !stopThread;iz++)
@@ -1325,15 +1025,11 @@ public class HydrogenAtomRender {
 //        Log.d("MarchingCubes", "Normal finish");
 
 
-        //valtable.clear();
-       // vector<float>(valtable).swap(valtable);
         valtable = null;
 //        Log.d("MarchingCubes", "trcntanim = " + trcntanim);
 //        Log.d("MarchingCubes", "trcnt = " + trcnt);
 //        Log.d("MarchingCubes", "Finish");
         fin = 1; //построение поверхности завершено
-        //_endthread();
-        //candraw = 1;
     }
 
     public void setRealKsi(boolean real) {
@@ -1344,14 +1040,9 @@ public class HydrogenAtomRender {
     void regenerate()
     {
 //        Log.d("Render", "Regenerate start");
-        //InterruptThread();
         fin = 0;
         trcnt = 0;
         overflow = false;
-        //reallocateMemory();
-        //ptcnt = 0;
-//        drawrks = false;
-//        hAtom.realksi = false;
         if (m<0)
         {
             hAtom.setsign(true);
@@ -1394,17 +1085,13 @@ public class HydrogenAtomRender {
                     size1 * 3 * 4).
                     order(ByteOrder.nativeOrder()).
                     asFloatBuffer();
-            //fprintf(fdbg, "%d\t%d\n", trivertex.size(), trivertex.capacity());
+            //fprintf(fdbg, "%d\t%d\k", trivertex.size(), trivertex.capacity());
         }
-
-//        glEnableClientState(GL_NORMAL_ARRAY);
-//        glEnable(GL_LIGHTING);
-//        glDisable(GL_BLEND);
 
         rounderror = false;
 
 //        Log.d("Render", "Prepareallpov start");
-        hAtom.prepareallpov(n, l, m);
+        hAtom.prepareallpov(k, l, m);
 //        Log.d("Render", "Prepareallpov finish");
 
         double xt,yt,zt;
@@ -1414,29 +1101,23 @@ public class HydrogenAtomRender {
         //отвечающего заданой вероятности
         double tr,tph,tth,mr=0,avcmp=0;
 
-        //if (n==1) avt1 = 6.;
-        //else avt1 = 2.5 * n;
-        avt1 = 1.3 * Math.sqrt((double)n + 1);
+        //if (k==1) avt1 = 6.;
+        //else avt1 = 2.5 * k;
+        avt1 = 1.3 * Math.sqrt((double) k + 1);
 
         //qDebug() << fTargetValue;
 
-        //fTargetValue = hAtom.getEquiValue(pct/100., fStepSize*avt1/100, (int)(250.0f/fStepSize+1), n, l, m);
+        //fTargetValue = hAtom.getEquiValue(pct/100., fStepSize*avt1/100, (int)(250.0f/fStepSize+1), k, l, m);
         //if (!drawrks)
 //        Log.d("Render", "Get target value start");
 //        Log.d("Render", "Size: " + 10*(int)(250.0f/fStepSize+1)*(int)(100.f*Math.sqrt(l+1.f)));
-          fTargetValue = (float)hAtom.getEquiValue(pct/100., 10*(int)(250.0f/fStepSize+1), 2.5*avt1, (int)(100.f*Math.sqrt(l+1.f)), n, l, m);
-//        fTargetValue = (float)hAtom.getEquiValue(pct/100., 2*(int)(250.0f/fStepSize+1), 2.5*avt1, (int)(20.f*Math.sqrt(l+1.f)), n, l, m);
+          fTargetValue = (float)hAtom.getEquiValue(pct/100., 10*(int)(250.0f/fStepSize+1), 2.5*avt1, (int)(100.f*Math.sqrt(l+1.f)), k, l, m);
+//        fTargetValue = (float)hAtom.getEquiValue(pct/100., 2*(int)(250.0f/fStepSize+1), 2.5*avt1, (int)(20.f*Math.sqrt(l+1.f)), k, l, m);
 //        Log.d("Render", "fTargetValue: " + fTargetValue);
 //        Log.d("Render", "Get target value finish");
 
         //qDebug() << fTargetValue;
 
-        //dlistgen = false;
-        //MarchCubesThread((void*)this);
-        //QtConcurrent::run(vMarchingCubes);
-        //QtConcurrent::run(MarchCubesThread, (void*)this);
-//        Log.d("Render", "Marching cubes start");
-        //vMarchingCubes();
         stopThread = false;
         Thread t = new Thread(new Runnable() {
             public void run() {
@@ -1446,7 +1127,6 @@ public class HydrogenAtomRender {
         t.start();
 
 //        Log.d("Render", "Marching cubes finish");
-        //_beginthread( MarchCubesThread, 0, (void*)this);  //сама генерация эквиповерхностей алгоритмом Marching Cubes
 //        Log.d("Render", "Regenerate finish");
     }
 
@@ -1454,9 +1134,6 @@ public class HydrogenAtomRender {
         if (fin==0) {
 //            Log.d("Render", "Suspending thread");
             stopThread = true;
-            //genThread.interrupt();
-            //genThread.interrupt();
-            //genThread = null;
         }
     }
 }
