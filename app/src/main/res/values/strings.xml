@@ -9,14 +9,14 @@
     <string name="radio_complex">Complex</string>
     <string name="radio_real">Real</string>
     <string name="discrete_warning">Not enough memory! Increase discretization step size</string>
-    <string name="numbers_condition">Quantum numbers must satisfy:\n0&lt;=k&lt;=25, 0&lt;=l&lt;=25, -l&lt;=m&lt;=l</string>
+    <string name="numbers_condition">Quantum numbers must satisfy:\n0&lt;=k&lt;=12, 0&lt;=l&lt;=12, -l&lt;=m&lt;=l</string>
 
     <string name="orbital">Eigenstate:</string>
 
     <string name="btn_orbital_ok_label">OK</string>
     <string name="btn_orbital_cancel_label">Cancel</string>
 
-    <string name="help_description">This app visualizes the eigenstates of the three-dimensional quantum harmonic oscillator in spherical coordinates basis. The hypersurfaces are defined as cross-sections of the probability density to find particle at a particular space point, which is defined by the square of the wave function of the energy eigenstate.\n\nEigenstate visualization is performed in OpenGL using the Marching Cubes algorithm. User can choose the eigenstate by specifying the quantum numbers n, l and m, as well the type of the wave function basis. It is also possible to regulate the level of discretization as well as the total probability to find the particle inside the drawn surface.</string>
+    <string name="help_description">This app visualizes the eigenstates of the three-dimensional quantum harmonic oscillator. The hypersurfaces are defined as cross-sections of the probability density to find particle at a particular space point, which is defined by the square of the wave function of the energy eigenstate.\n\nEigenstate visualization is performed in OpenGL using the Marching Cubes algorithm. User can choose the eigenstate by specifying the quantum numbers k, l and m of the spherical coordinate basis. One can choose between trigonometric (real) and exponential (complex) basis for the azimuthal angle part. It is also possible to regulate the level of discretization as well as the total probability to find the particle inside the drawn surface.</string>
 	
 	<string name="wikipedia_link">More info at Wikipedia</string>
 

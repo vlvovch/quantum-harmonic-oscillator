@@ -59,10 +59,10 @@ public class InformationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pub:Voladd")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://developer?id=Voladd")));
                 } catch (Exception e) {
 //                    Log.d("Information", "Message =" + e);
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=pub:Voladd")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=Voladd")));
                 }
             }
         });

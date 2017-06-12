@@ -53,7 +53,7 @@ public class OrbitalDialog extends Activity {
             public void onClick(View v) {
                 int k = Integer.parseInt(tvk.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
-                if (k+1<=25) {
+                if (k+1<=12) {
                     k++;
                     tvk.setText("" + k);
                 }
@@ -85,7 +85,7 @@ public class OrbitalDialog extends Activity {
                 int k = Integer.parseInt(tvk.getText().toString());
                 int l = Integer.parseInt(tvl.getText().toString());
                 int m = Integer.parseInt(tvm.getText().toString());
-                if (l+1<=25) {
+                if (l+1<=12) {
                     l++;
                     tvl.setText("" + l);
                 }
