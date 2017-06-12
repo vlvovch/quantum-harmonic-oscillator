@@ -67,7 +67,10 @@ public class QOGLActivity extends Activity {
                     }});
                 mGLView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
                 timerHandler.removeCallbacks(timerRunnable);
-                ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_replay);
+                if (Build.VERSION.SDK_INT >= 11)
+                    ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_replay);
+                else
+                    ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_replay_dark);
                 findViewById(R.id.button_regenerate).setEnabled(true);
                 findViewById(R.id.button_random).setEnabled(true);
                 isRunning = false;
@@ -165,7 +168,10 @@ public class QOGLActivity extends Activity {
                     updateOrbitalName();
                     findViewById(R.id.progress).setVisibility(View.VISIBLE);
                     //findViewById(R.id.energy_name).setVisibility(View.INVISIBLE);
-                    ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop);
+                    if (Build.VERSION.SDK_INT >= 11)
+                        ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop);
+                    else
+                        ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop_dark);
                     findViewById(R.id.button_random).setEnabled(false);
                     //findViewById(R.id.button_regenerate).setEnabled(false);
                     isRunning = true;
@@ -211,7 +217,10 @@ public class QOGLActivity extends Activity {
                     QOGLRenderer.mOscillator.pct = seekBarPercent.getProgress() + 1;
                     updateOrbitalName();
                     findViewById(R.id.progress).setVisibility(View.VISIBLE);
-                    ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop);
+                    if (Build.VERSION.SDK_INT >= 11)
+                        ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop);
+                    else
+                        ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop_dark);
                     isRunning = true;
                     timerHandler.postDelayed(timerRunnable, 0);
                     mGLView.queueEvent(new Runnable() {
@@ -225,7 +234,10 @@ public class QOGLActivity extends Activity {
                     });
                 }
                 else {
-                    ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_replay);
+                    if (Build.VERSION.SDK_INT >= 11)
+                        ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_replay);
+                    else
+                        ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_replay_dark);
                     findViewById(R.id.button_regenerate).setEnabled(false);
                     isRunning = false;
                     mGLView.queueEvent(new Runnable() {
@@ -323,7 +335,10 @@ public class QOGLActivity extends Activity {
             updateOrbitalName();
             findViewById(R.id.progress).setVisibility(View.VISIBLE);
             //findViewById(R.id.energy_name).setVisibility(View.INVISIBLE);
-            ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop);
+            if (Build.VERSION.SDK_INT >= 11)
+                ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop);
+            else
+                ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop_dark);
             //findViewById(R.id.button_regenerate).setEnabled(false);
             isRunning = true;
             timerHandler.postDelayed(timerRunnable, 0);
@@ -339,7 +354,10 @@ public class QOGLActivity extends Activity {
             });
         }
         else {
-            ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_replay);
+            if (Build.VERSION.SDK_INT >= 11)
+                ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_replay);
+            else
+                ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_replay_dark);
             findViewById(R.id.button_regenerate).setEnabled(false);
             isRunning = false;
             mGLView.queueEvent(new Runnable() {
@@ -419,7 +437,10 @@ public class QOGLActivity extends Activity {
             mGLView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 //            findViewById(R.id.button_regenerate).setEnabled(false);
             findViewById(R.id.button_regenerate).setEnabled(true);
-            ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop);
+            if (Build.VERSION.SDK_INT >= 11)
+                ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop);
+            else
+                ((ImageButton)findViewById(R.id.button_regenerate)).setImageResource(R.drawable.ic_action_stop_dark);
             isRunning = true;
         }
         if (QOGLRenderer.mOscillator.toCont) {

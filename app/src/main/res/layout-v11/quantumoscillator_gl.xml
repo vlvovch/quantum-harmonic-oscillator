@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text=""
-                android:src="@drawable/ic_action_replay_dark"
+                android:src="@drawable/ic_action_replay"
                 android:onClick="regenerate"/>
         </LinearLayout>
         <LinearLayout
