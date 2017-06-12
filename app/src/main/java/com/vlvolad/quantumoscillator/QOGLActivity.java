@@ -123,7 +123,7 @@ public class QOGLActivity extends Activity {
         QOGLRenderer.mOscillator.pct = PreferenceManager.getDefaultSharedPreferences(
                 QOGLActivity.this).getFloat("percent", 70.f);
         QOGLRenderer.mOscillator.fStepSize = PreferenceManager.getDefaultSharedPreferences(
-                QOGLActivity.this).getFloat("step_size", 6.f);
+                QOGLActivity.this).getFloat("step_size", 5.f);
 
         QOGLRenderer.mOscillator.fin = 0;
         updateOrbitalName();
