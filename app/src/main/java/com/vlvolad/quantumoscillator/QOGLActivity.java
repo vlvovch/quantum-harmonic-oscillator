@@ -100,8 +100,8 @@ public class QOGLActivity extends Activity {
         }
         setContentView(R.layout.quantumoscillator_gl);
 
-        if(Build.VERSION.SDK_INT >= 14)
-            getActionBar().setIcon(R.drawable.ic_action_oscillator);
+        //if(Build.VERSION.SDK_INT >= 14)
+        //    getActionBar().setIcon(R.drawable.ic_action_oscillator);
 
         Runtime rt = Runtime.getRuntime();
         long maxMemory = rt.maxMemory();
