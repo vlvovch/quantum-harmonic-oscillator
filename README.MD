@@ -1,4 +1,4 @@
-<img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" align="right" />
+<img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher_custom.png" align="right" />
 
 # Quantum Harmonic Oscillator 
 
