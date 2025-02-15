@@ -32,7 +32,7 @@ import android.widget.Toast;
 import java.lang.reflect.Method;
 
 /**
- * Created by Vladimir on 29.04.2015.
+ * Created by Volodymyr on 29.04.2015.
  */
 public class QOGLActivity extends Activity {
 
@@ -46,6 +46,9 @@ public class QOGLActivity extends Activity {
     static String TAG = "QOGLActivity";
 
     static int frequency = 50;
+
+    static float stepSizeMin = 2.0f;
+    static float stepSizeMax = 12.0f;
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
@@ -161,7 +164,7 @@ public class QOGLActivity extends Activity {
                 if (!isRunning) {
                     QOGLRenderer.mOscillator.pickRandomOrbital(5);
                     QOGLRenderer.mOscillator.fin = 0;
-                    QOGLRenderer.mOscillator.fStepSize = 2.f + seekBarStepSize.getProgress() / 10.f;
+                    QOGLRenderer.mOscillator.fStepSize = stepSizeMin + (stepSizeMax - stepSizeMin) * seekBarStepSize.getProgress() / 100.f;
                     QOGLRenderer.mOscillator.pct = seekBarPercent.getProgress() + 1;
                     QOGLRenderer.mOscillator.setRealKsi(PreferenceManager.getDefaultSharedPreferences(
                             QOGLActivity.this).getBoolean("wave_function_real", true));
@@ -213,7 +216,7 @@ public class QOGLActivity extends Activity {
                     QOGLRenderer.mOscillator.setRealKsi(PreferenceManager.getDefaultSharedPreferences(
                             QOGLActivity.this).getBoolean("wave_function_real", true));
                     QOGLRenderer.mOscillator.fin = 0;
-                    QOGLRenderer.mOscillator.fStepSize = 2.f + seekBarStepSize.getProgress() / 10.f;
+                    QOGLRenderer.mOscillator.fStepSize = stepSizeMin + (stepSizeMax - stepSizeMin) * seekBarStepSize.getProgress() / 100.f;
                     QOGLRenderer.mOscillator.pct = seekBarPercent.getProgress() + 1;
                     updateOrbitalName();
                     findViewById(R.id.progress).setVisibility(View.VISIBLE);
@@ -298,7 +301,7 @@ public class QOGLActivity extends Activity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
                 progress = progressValue;
-                textViewStepSize.setText(String.format("%.1f", 2. + progress / 10.));
+                textViewStepSize.setText(String.format("%.1f", stepSizeMin + (stepSizeMax - stepSizeMin) * progress / 100.f));
 //                Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
             }
 
@@ -310,7 +313,7 @@ public class QOGLActivity extends Activity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                textViewStepSize.setText(String.format("%.1f", 2. + progress / 10.));
+                textViewStepSize.setText(String.format("%.1f", stepSizeMin + (stepSizeMax - stepSizeMin) * progress / 100.f));
 //                Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
             }
         });
@@ -330,7 +333,7 @@ public class QOGLActivity extends Activity {
             QOGLRenderer.mOscillator.setRealKsi(PreferenceManager.getDefaultSharedPreferences(
                     QOGLActivity.this).getBoolean("wave_function_real", true));
             QOGLRenderer.mOscillator.fin = 0;
-            QOGLRenderer.mOscillator.fStepSize = 2.f + seekBarStepSize.getProgress() / 10.f;
+            QOGLRenderer.mOscillator.fStepSize = stepSizeMin + (stepSizeMax - stepSizeMin) * seekBarStepSize.getProgress() / 100.f;
             QOGLRenderer.mOscillator.pct = seekBarPercent.getProgress() + 1;
             updateOrbitalName();
             findViewById(R.id.progress).setVisibility(View.VISIBLE);

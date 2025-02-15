@@ -1,7 +1,7 @@
 package com.vlvolad.quantumoscillator;
 
 /**
- * Created by Vladimir on 28.04.2015.
+ * Created by Volodymyr on 28.04.2015.
  */
 public class Poly {
     public int st;

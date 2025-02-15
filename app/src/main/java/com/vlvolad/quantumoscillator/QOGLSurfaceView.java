@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
 /**
- * Created by Vladimir on 29.04.2015.
+ * Created by Volodymyr on 29.04.2015.
  */
 public class QOGLSurfaceView extends GLSurfaceView {
 

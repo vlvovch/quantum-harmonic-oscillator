@@ -8,7 +8,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
- * Created by Vladimir on 28.04.2015.
+ * Created by Volodymyr on 28.04.2015.
  */
 public class QOGLRenderer implements GLSurfaceView.Renderer{
     private static final String TAG = "HAGLRenderer";

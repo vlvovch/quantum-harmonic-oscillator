@@ -1,34 +1,38 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace 'com.vlvolad.quantumoscillator'
     signingConfigs {
         config {
             Properties properties = new Properties()
             properties.load(project.rootProject.file('local.properties').newDataInputStream())
-            storeFile file(properties.getProperty('storeFile'))
-            keyAlias properties.getProperty('keyAlias')
-            storePassword properties.getProperty('storePassword')
-            keyPassword properties.getProperty('keyPassword')
+            if (properties!=null && properties.containsKey('storeFile') && properties.containsKey('keyAlias') &&
+                    properties.containsKey('storePassword') && properties.containsKey('keyPassword')) {
+                storeFile file(properties.getProperty('storeFile'))
+                keyAlias properties.getProperty('keyAlias')
+                storePassword properties.getProperty('storePassword')
+                keyPassword properties.getProperty('keyPassword')
+            }
         }
     }
     compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+//    buildToolsVersion '25.0.3'
     defaultConfig {
         applicationId 'com.vlvolad.quantumoscillator'
         minSdkVersion 10
-        targetSdkVersion 25
-        versionCode 2
-        versionName "1.0"
+        targetSdkVersion 34
+        versionCode 3
+        versionName "1.0.1"
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
+//            signingConfig signingConfigs.config
         }
         debug {
-            signingConfig signingConfigs.config
+//            signingConfig signingConfigs.config
         }
     }
     productFlavors {
@@ -36,6 +40,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:25.3.1'
 }

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Created by Vladimir on 18.05.2015.
+ * Created by Volodymyr on 18.05.2015.
  */
 public class OrbitalDialog extends Activity {
     private TextView tvk, tvl, tvm;

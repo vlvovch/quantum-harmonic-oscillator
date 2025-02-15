@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- * Created by Vladimir on 28.04.2015.
+ * Created by Volodymyr on 28.04.2015.
  */
 public class QuantumOscillatorMath {
     static public final double a = 5.2917720859e-11;

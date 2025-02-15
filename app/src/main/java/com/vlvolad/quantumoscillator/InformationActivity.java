@@ -1,7 +1,7 @@
 package com.vlvolad.quantumoscillator;
 
 /**
- * Created by Vladimir on 02.05.2015.
+ * Created by Volodymyr on 02.05.2015.
  */
 
 import android.app.Activity;
